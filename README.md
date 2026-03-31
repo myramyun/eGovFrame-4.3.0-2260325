@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 표준프레임워크 심플홈페이지 FrontEnd
 
 ![react](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black)
@@ -173,4 +173,3 @@ npm run test:run
 =======
 # eGovFrame-4.3.0-2260325
 eGovFrame Boot Template Project - renewal
->>>>>>> a5c35007d25b5deab06772dba433c3b737822344

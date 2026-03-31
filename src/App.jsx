@@ -6,6 +6,7 @@ import "@/css/layout.css";
 import "@/css/component.css";
 import "@/css/page.css";
 import "@/css/response.css";
+import "@/css/dx.css"; ///
 
 function App() {
   return (
