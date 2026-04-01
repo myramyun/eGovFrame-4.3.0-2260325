@@ -23,6 +23,13 @@ const URL = {
   SUPPORT_DOWNLOAD_DETAIL: "/egovframe-template-simple-react/support/download/detail", // 고객지원/자료실/상세
   SUPPORT_DOWNLOAD_CREATE: "/egovframe-template-simple-react/support/download/create", // 고객지원/자료실/등록 /// create, modify는 index.js에서 정의 된 ~Edit page로 이동한다
   SUPPORT_DOWNLOAD_MODIFY: "/egovframe-template-simple-react/support/download/modify", // 고객지원/자료실/수정 /// create, modify는 index.js에서 정의 된 ~Edit page로 이동한다
+  
+  SUPPORT_ASSET: "/egovframe-template-simple-react/support/asset", // 사이트관리/자료실사용관리 목록
+  SUPPORT_ASSET_DETAIL: "/egovframe-template-simple-react/support/asset/detail", // 사이트관리/자료실사용관리 상세
+  SUPPORT_ASSET_CREATE: "/egovframe-template-simple-react/support/asset/create", // 사이트관리/자료실사용관리 등록
+  SUPPORT_ASSET_MODIFY: "/egovframe-template-simple-react/support/asset/modify", // 사이트관리/자료실사용관리 상세/수정
+
+
   SUPPORT_QNA: "/egovframe-template-simple-react/support/qna", // 고객지원/묻고답하기
   SUPPORT_QNA_DETAIL: "/egovframe-template-simple-react/support/qna/detail", // 고객지원/묻고답하기/상세
   SUPPORT_APPLY: "/egovframe-template-simple-react/support/apply", // 고객지원/서비스신청
@@ -66,10 +73,10 @@ const URL = {
   ADMIN_SCHEDULE_CREATE: "/egovframe-template-simple-react/admin/schedule/create", // 사이트관리/일정관리생성
   ADMIN_SCHEDULE_MODIFY: "/egovframe-template-simple-react/admin/schedule/modify", // 사이트관리/일정관리수정
 
-  ADMIN_ASSET: "/egovframe-template-simple-react/admin/asset", // 사이트관리/자료실생성관리 목록
-  ADMIN_ASSET_DETAIL: "/egovframe-template-simple-react/admin/asset/detail", // 사이트관리/자료실생성관리 상세
-  ADMIN_ASSET_CREATE: "/egovframe-template-simple-react/admin/asset/create", // 사이트관리/자료실생성관리 등록
-  ADMIN_ASSET_MODIFY: "/egovframe-template-simple-react/admin/asset/modify", // 사이트관리/자료실생성관리 상세/수정
+  ADMIN_ASSETREF: "/egovframe-template-simple-react/admin/assetref", // 사이트관리/자료실생성관리 목록
+  ADMIN_ASSETREF_DETAIL: "/egovframe-template-simple-react/admin/assetref/detail", // 사이트관리/자료실생성관리 상세
+  ADMIN_ASSETREF_CREATE: "/egovframe-template-simple-react/admin/assetref/create", // 사이트관리/자료실생성관리 등록
+  ADMIN_ASSETREF_MODIFY: "/egovframe-template-simple-react/admin/assetref/modify", // 사이트관리/자료실생성관리 상세/수정
 
   ADMIN_BOARD: "/egovframe-template-simple-react/admin/board", // 사이트관리/게시판생성관리 목록
   ADMIN_BOARD_DETAIL: "/egovframe-template-simple-react/admin/board/detail", // 사이트관리/게시판생성관리 상세

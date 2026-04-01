@@ -32,6 +32,9 @@ import EgovSupportDownloadList from "@/pages/support/download/EgovDownloadList";
 import EgovSupportDownloadDetail from "@/pages/support/download/EgovDownloadDetail";
 import EgovSupportDownloadEdit from "@/pages/support/download/EgovDownloadEdit"; /// url.js의 경로 create, modify는 ~Edit page로 이동한다
 
+import DxAssetList from "@/pages/support/asset/DxAssetList";
+import DxAssetEdit from "@/pages/support/asset/DxAssetEdit";
+
 import EgovSupportQnaList from "@/pages/support/qna/EgovQnaList";
 import EgovSupportQnaDetail from "@/pages/support/qna/EgovQnaDetail";
 import EgovSupportApply from "@/pages/support/apply/EgovSupportApply";
@@ -69,8 +72,8 @@ import EgovAdminScheduleList from "@/pages/admin/schedule/EgovAdminScheduleList"
 import EgovAdminScheduleDetail from "@/pages/admin/schedule/EgovAdminScheduleDetail";
 import EgovAdminScheduleEdit from "@/pages/admin/schedule/EgovAdminScheduleEdit";
 
-import EgovAdminAssetList from "@/pages/admin/asset/DxAssetRefList";
-import EgovAdminAssetEdit from "@/pages/admin/asset/DxAssetRefEdit";
+import DxAssetRefList from "@/pages/admin/asset/DxAssetRefList";
+import DxAssetRefEdit from "@/pages/admin/asset/DxAssetRefEdit";
 
 import EgovAdminBoardList from "@/pages/admin/board/EgovAdminBoardList";
 import EgovAdminBoardEdit from "@/pages/admin/board/EgovAdminBoardEdit";
@@ -339,6 +342,10 @@ const SecondRoutes = () => {
         <Route path={URL.SUPPORT_DOWNLOAD_MODIFY} element={<EgovSupportDownloadEdit mode={CODE.MODE_MODIFY} />} />
         <Route path={URL.SUPPORT_DOWNLOAD_REPLY} element={<EgovSupportDownloadEdit mode={CODE.MODE_REPLY} />} />
 
+        <Route path={URL.SUPPORT_ASSET} element={<DxAssetList />} />
+        <Route path={URL.SUPPORT_ASSET_CREATE} element={<DxAssetEdit mode={CODE.MODE_CREATE} />} />
+        <Route path={URL.SUPPORT_ASSET_MODIFY} element={<DxAssetEdit mode={CODE.MODE_MODIFY} />} />
+
         <Route path={URL.SUPPORT_QNA} element={<EgovSupportQnaList />} />
         <Route path={URL.SUPPORT_QNA_DETAIL} element={<EgovSupportQnaDetail />} />
         <Route path={URL.SUPPORT_APPLY} element={<EgovSupportApply />} />
@@ -393,9 +400,9 @@ const SecondRoutes = () => {
         <Route path={URL.ADMIN_SCHEDULE_CREATE} element={<EgovAdminScheduleEdit mode={CODE.MODE_CREATE} />} />
         <Route path={URL.ADMIN_SCHEDULE_MODIFY} element={<EgovAdminScheduleEdit mode={CODE.MODE_MODIFY} />} />
 
-        <Route path={URL.ADMIN_ASSET} element={<EgovAdminAssetList />} />
-        <Route path={URL.ADMIN_ASSET_CREATE} element={<EgovAdminAssetEdit mode={CODE.MODE_CREATE} />} />
-        <Route path={URL.ADMIN_ASSET_MODIFY} element={<EgovAdminAssetEdit mode={CODE.MODE_MODIFY} />} />
+        <Route path={URL.ADMIN_ASSETREF} element={<DxAssetRefList />} />
+        <Route path={URL.ADMIN_ASSETREF_CREATE} element={<DxAssetRefEdit mode={CODE.MODE_CREATE} />} />
+        <Route path={URL.ADMIN_ASSETREF_MODIFY} element={<DxAssetRefEdit mode={CODE.MODE_MODIFY} />} />
 
         <Route path={URL.ADMIN_BOARD} element={<EgovAdminBoardList />} />
         <Route path={URL.ADMIN_BOARD_CREATE} element={<EgovAdminBoardEdit mode={CODE.MODE_CREATE} />} />

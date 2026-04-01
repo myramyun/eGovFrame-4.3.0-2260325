@@ -2,6 +2,10 @@
 .p_MAIN .colbox { height: 900px; }
 .P_MAIN .colbox .left_col img { box-shadow: none; border-radius: 0; }
 
+.all_menu.WEB { display: flex; justify-content: center; }
+.all_menu.WEB .inner { width: fit-content; }
+.all_menu.WEB .inner .col { position: relative; width: 200px; }
+
 /* /// HEADER */
 .header h1 a, .header h1 img { max-width: 320px; max-height: 72px; }
 
@@ -38,3 +42,4 @@
 .dxbnr.xii .txt_box .m>p { color: #222; font-size: 18px;  text-shadow: 0px 0px 4px #ffff; }
 
 
+.condition.xi { margin-top: 48px; }

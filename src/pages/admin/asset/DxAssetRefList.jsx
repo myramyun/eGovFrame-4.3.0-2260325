@@ -9,13 +9,13 @@ import EgovPaging from "@/components/EgovPaging";
 
 import { itemIdxByPage } from "@/utils/calc";
 
-function DxAssetList(props) {
+function DxAssetRefList(props) {
   const location = useLocation();
 
   // 공통 네비게이션 훅 사용
   const cndRef = useRef();
   const wrdRef = useRef();
-  console.log("//////////////////////////////////", cndRef, wrdRef);
+
   const tyCds = [
     { value: "", label: "선택" },
     { value: "ASSE01", label: "일반자료실" },
@@ -32,7 +32,6 @@ function DxAssetList(props) {
 
   const retrieveList = useCallback(
     (srchCnd) => {
-      console.log('/// retrieveList srchCnd', srchCnd);
       const retrieveListURL = "/assetRef" + EgovNet.getQueryString(srchCnd);
       const requestOptions = {
         method: "GET",
@@ -45,7 +44,6 @@ function DxAssetList(props) {
         (resp) => {
           setPaginationInfo(resp.result.paginationInfo);
           setResultList(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
-          console.log("/// resp.result", resp.result);
         },
         (resp) => {
           console.log("/// err response : ", resp);
@@ -65,18 +63,9 @@ function DxAssetList(props) {
         {/* <!-- Location --> */}
         <div className="location">
           <ul>
-            <li>
-              {" "}
-              <Link to={URL.MAIN} className="home">
-                {" "}
-                Home{" "}
-              </Link>{" "}
-            </li>
-            <li>
-              {" "}
-              <Link to={URL.ADMIN}>사이트관리</Link>{" "}
-            </li>
-            <li>자료실생성관리</li>
+            <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+            <li> <Link to={URL.ADMIN}>사이트관리</Link> </li>
+            <li>자료실관리</li>
           </ul>
         </div>
         {/* <!--// Location --> */}
@@ -85,10 +74,7 @@ function DxAssetList(props) {
           <EgovLeftNav /> {/* <!--// Navigation --> */}
           {/* <!-- 본문 --> */}
           <div className="contents ASSET_CREATE_LIST" id="contents">
-            <div className="top_tit">
-              {" "}
-              <h1 className="tit_1">사이트관리</h1>{" "}
-            </div>
+            <div className="top_tit"> <h1 className="tit_1">사이트관리</h1> </div>
             <h2 className="tit_2">자료실생성관리</h2>
 
             {/* <!-- 검색조건 --> */}
@@ -102,10 +88,7 @@ function DxAssetList(props) {
                       name="searchCnd"
                       title="검색유형선택"
                       ref={cndRef}
-                      onChange={(e) => {
-                        setAssetTyCodeCnd(e.target.value);
-                        cndRef.current.value = e.target.value;
-                      }}>
+                      onChange={e => { setAssetTyCodeCnd(e.target.value); cndRef.current.value = e.target.value; }}>
                       <option value="0">자료실명</option>
                       <option value="1">자료실유형</option>
                     </select>
@@ -121,9 +104,7 @@ function DxAssetList(props) {
                       defaultValue={srchCnd && srchCnd.searchKeyword}
                       placeholder={tyCdCnd === "1" ? tyCdLabels : "자료실명을 입력하세요"}
                       ref={wrdRef}
-                      onChange={(e) => {
-                        wrdRef.current.value = e.target.value;
-                      }}
+                      onChange={e => { wrdRef.current.value = e.target.value; }}
                     />
                     <button
                       type="button"
@@ -140,9 +121,7 @@ function DxAssetList(props) {
                   </span>
                 </li>
                 <li>
-                  <Link to={URL.ADMIN_ASSET_CREATE} className="btn btn_blue_h46 pd35">
-                    추가
-                  </Link>
+                  <Link to={URL.ADMIN_ASSETREF_CREATE} className="btn btn_blue_h46 pd35"> 추가 </Link>
                 </li>
               </ul>
             </div>
@@ -166,7 +145,7 @@ function DxAssetList(props) {
                   const listIdx = itemIdxByPage(resultCnt, currentPageNo, pageSize, index);
 
                   return (
-                    <Link to={{ pathname: URL.ADMIN_ASSET_MODIFY }} state={{ refId: item.refId, searchCondition: srchCnd }} key={listIdx} className="list_item">
+                    <Link to={{ pathname: URL.ADMIN_ASSETREF_MODIFY }} state={{ refId: item.refId, searchCondition: srchCnd }} key={listIdx} className="list_item">
                       <div>{listIdx}</div>
                       <div dangerouslySetInnerHTML={{ __html: item.assetNm }}></div>
                       <div>{tyCds.find((e) => e.value === item.assetTyCode)?.label}</div>
@@ -197,6 +176,6 @@ function DxAssetList(props) {
   );
 }
 
-export default DxAssetList;
+export default DxAssetRefList;
 
 

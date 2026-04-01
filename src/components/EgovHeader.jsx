@@ -73,11 +73,11 @@ function EgovHeader() {
           <ul>
             <li> <NavLink to={URL.ABOUT} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트소개 </NavLink> </li>
             <li> <NavLink to={URL.INTRO} className={({ isActive }) => (isActive ? "cur" : "")} > 정보마당 </NavLink> </li>
-            <li> <NavLink to={URL.SUPPORT} className={({ isActive }) => (isActive ? "cur" : "")} > 고객지원 </NavLink> </li>
             <li> <NavLink to={URL.INFORM} className={({ isActive }) => (isActive ? "cur" : "")} > 알림마당 </NavLink> </li>
             <li> <NavLink to={URL.PRODUCT} className={({ isActive }) => (isActive ? "cur" : "")} > 쇼핑몰 </NavLink> </li>
+            <li> <NavLink to={URL.SUPPORT} className={({ isActive }) => (isActive ? "cur" : "")} > 고객지원 </NavLink> </li>
             {sessionUserSe === "ADM" && (
-              <li> <NavLink to={URL.ADMIN} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판 관리 </NavLink> </li>
+              <li> <NavLink to={URL.ADMIN} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리 </NavLink> </li>
             )} 
           </ul>
         </div>
@@ -87,14 +87,11 @@ function EgovHeader() {
           {/* 로그아웃 : 로그인 정보 있을때 */}
           {sessionUserId && (
             <>
-              <span className="person">{sessionUserName} </span> 님이,{" "}
-              {sessionUserSe}로 로그인하셨습니다.
+              <span className="person">{sessionUserName} </span> 님이, {sessionUserSe}로 로그인하셨습니다.
               {sessionUserSe === "USR" && (
                 <NavLink to={URL.MYPAGE_MODIFY} className={({ isActive }) => isActive ? "btn login cur" : "btn login" } > 마이페이지 </NavLink>
               )}
-              <button onClick={logOutHandler} className="btn">
-                로그아웃
-              </button>
+              <button onClick={logOutHandler} className="btn"> 로그아웃 </button>
             </>
           )}
           {/* 로그인 : 로그인 정보 없을 때 */}
@@ -135,14 +132,6 @@ function EgovHeader() {
             </ul>
           </div>
           <div className="col">
-            <h3>고객지원</h3>
-            <ul>
-              <li> <NavLink to={URL.SUPPORT_DOWNLOAD} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실 </NavLink> </li>
-              <li> <NavLink to={URL.SUPPORT_QNA} className={({ isActive }) => (isActive ? "cur" : "")} > 묻고 답하기 </NavLink> </li>
-              <li> <NavLink to={URL.SUPPORT_APPLY} className={({ isActive }) => (isActive ? "cur" : "")} > 서비스 신청 </NavLink> </li>
-            </ul>
-          </div>
-          <div className="col">
             <h3>알림마당</h3>
             <ul>
               <li> <NavLink to={URL.INFORM_DAILY}>오늘의 행사</NavLink> </li>
@@ -162,13 +151,23 @@ function EgovHeader() {
               )} 
             </ul>
           </div>
+          <div className="col">
+            <h3>고객지원</h3>
+            <ul>
+              <li> <NavLink to={URL.SUPPORT_DOWNLOAD} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_ASSET} className={({ isActive }) => (isActive ? "cur" : "")} > 에셋 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_QNA} className={({ isActive }) => (isActive ? "cur" : "")} > 묻고 답하기 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_APPLY} className={({ isActive }) => (isActive ? "cur" : "")} > 서비스 신청 </NavLink> </li>
+            </ul>
+          </div>
           {sessionUserSe === "ADM" && (
             <div className="col">
               <h3>사이트관리</h3>
               <ul>
                 <li> <NavLink to={URL.ADMIN_SCHEDULE} className={({ isActive }) => (isActive ? "cur" : "")} > 일정관리 </NavLink> </li>
+                <li> <NavLink to={URL.ADMIN_ASSETREF} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실관리 </NavLink> </li>
                 <li> <NavLink to={URL.ADMIN_BOARD} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판생성관리 </NavLink> </li>
-                <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li>
+                {/* <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li> */}
                 <li> <NavLink to={URL.ADMIN_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항관리 </NavLink> </li>
                 <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트갤러리관리 </NavLink> </li>
                 <li> <NavLink to={URL.ADMIN_MANAGER} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리자 암호변경 </NavLink> </li>
@@ -196,10 +195,9 @@ function EgovHeader() {
               <NavLink to={URL.MYPAGE_CREATE} className={({ isActive }) => isActive ? "btn login cur" : "btn login" } > 회원가입 </NavLink>
             </>
           )}
-          <button className="btn noscript close" type="button">
-            전체메뉴 닫기
-          </button>
+          <button className="btn noscript close" type="button"> 전체메뉴 닫기 </button>
         </div>
+        
         <div className="menu">
           <h3> <Link to={URL.ABOUT}>사이트소개</Link> </h3>
           <div className="submenu closed">
@@ -215,14 +213,6 @@ function EgovHeader() {
             <ul>
               <li> <NavLink to={URL.INTRO_WORKS} className={({ isActive }) => (isActive ? "cur" : "")} > 주요사업 소개 </NavLink> </li>
               <li> <NavLink to={URL.INTRO_SERVICE} className={({ isActive }) => (isActive ? "cur" : "")} > 대표서비스 소개 </NavLink> </li>
-            </ul>
-          </div>
-          <h3> <Link to={URL.SUPPORT}>고객지원</Link> </h3>
-          <div className="submenu closed">
-            <ul>
-              <li> <NavLink to={URL.SUPPORT_DOWNLOAD} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실 </NavLink> </li>
-              <li> <NavLink to={URL.SUPPORT_QNA} className={({ isActive }) => (isActive ? "cur" : "")} > 묻고 답하기 </NavLink> </li>
-              <li> <NavLink to={URL.SUPPORT_APPLY} className={({ isActive }) => (isActive ? "cur" : "")} > 서비스 신청 </NavLink> </li>
             </ul>
           </div>
           <h3> <Link to={URL.INFORM}>알림마당</Link> </h3>
@@ -245,14 +235,24 @@ function EgovHeader() {
               )} 
             </ul>
           </div>
+          <h3> <Link to={URL.SUPPORT}>고객지원</Link> </h3>
+          <div className="submenu closed">
+            <ul>
+              <li> <NavLink to={URL.SUPPORT_DOWNLOAD} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_ASSET} className={({ isActive }) => (isActive ? "cur" : "")} > 에셋 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_QNA} className={({ isActive }) => (isActive ? "cur" : "")} > 묻고 답하기 </NavLink> </li>
+              <li> <NavLink to={URL.SUPPORT_APPLY} className={({ isActive }) => (isActive ? "cur" : "")} > 서비스 신청 </NavLink> </li>
+            </ul>
+          </div>
           {sessionUserSe === "ADM" && (
             <>
               <h3> <Link to={URL.ADMIN}>사이트관리</Link> </h3>
               <div className="submenu closed">
                 <ul>
                   <li> <NavLink to={URL.ADMIN_SCHEDULE} className={({ isActive }) => (isActive ? "cur" : "")} > 일정관리 </NavLink> </li>
+                  <li> <NavLink to={URL.ADMIN_ASSETREF} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실관리 </NavLink> </li>
                   <li> <NavLink to={URL.ADMIN_BOARD} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판생성관리 </NavLink> </li>
-                  <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li>
+                  {/* <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li> */}
                   <li> <NavLink to={URL.ADMIN_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항관리 </NavLink> </li>
                   <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트갤러리관리 </NavLink> </li>
                   <li> <NavLink to={URL.ADMIN_MANAGER} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리자 암호변경 </NavLink> </li>

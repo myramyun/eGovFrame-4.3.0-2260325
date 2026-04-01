@@ -12,10 +12,6 @@ import EgovPaging from "@/components/EgovPaging";
 import { itemIdxByPage } from "@/utils/calc";
 
 function EgovAdminGalleryList(props) {
-  console.group("EgovAdminGalleryList");
-  console.log("[Start] EgovAdminGalleryList ------------------------------");
-  console.log("EgovAdminGalleryList [props] : ", props);
-
   const cndRef = useRef();
   const wrdRef = useRef();
 
@@ -29,14 +25,10 @@ function EgovAdminGalleryList(props) {
   const [listTag, setListTag] = useState([]);
 
   const retrieveList = useCallback((searchCondition) => {
-    console.groupCollapsed("EgovAdminGalleryList.retrieveList()");
-
     const retrieveListURL = "/board" + EgovNet.getQueryString(searchCondition);
     const requestOptions = {
       method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
+      headers: { "Content-type": "application/json", },
     };
 
     EgovNet.requestFetch(
@@ -98,20 +90,13 @@ function EgovAdminGalleryList(props) {
         setListTag(mutListTag);
       },
       function (resp) {
-        console.log("err response : ", resp);
+        console.log("/// err response : ", resp);
       }
     );
-    console.groupEnd("EgovAdminGalleryList.retrieveList()");
   }, []);
 
-  //======================================================
-  useEffect(() => {
-    retrieveList(searchCondition);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { retrieveList(searchCondition); }, []);
 
-  console.log("------------------------------EgovAdminGalleryList [End]");
-  console.groupEnd("EgovAdminGalleryList");
   return (
     <div className="container">
       <div className="c_wrap">
@@ -155,9 +140,7 @@ function EgovAdminGalleryList(props) {
                       title="조건"
                       defaultValue={searchCondition.searchCnd}
                       ref={cndRef}
-                      onChange={(e) => {
-                        cndRef.current.value = e.target.value;
-                      }}
+                      onChange={e => { cndRef.current.value = e.target.value; }}
                     >
                       <option value="0">제목</option>
                       <option value="1">내용</option>
@@ -173,15 +156,11 @@ function EgovAdminGalleryList(props) {
                       defaultValue={searchCondition.searchWrd}
                       placeholder=""
                       ref={wrdRef}
-                      onChange={(e) => {
-                        wrdRef.current.value = e.target.value;
-                      }}
+                      onChange={e => { wrdRef.current.value = e.target.value; }}
                     />
                     <button
                       type="button"
-                      onClick={() => {
-                        handleSearch(cndRef, wrdRef, retrieveList);
-                      }}
+                      onClick={() => { handleSearch(cndRef, wrdRef, retrieveList); }}
                     >
                       조회
                     </button>

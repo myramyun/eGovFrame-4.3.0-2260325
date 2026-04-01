@@ -9,7 +9,7 @@ import { useDebouncedInput } from "@/hooks/useDebounce";
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavAdmin";
 import EgovRadioButtonGroup from "@/components/EgovRadioButtonGroup";
 
-function DxAssetEdit(props) {
+function DxAssetRefEdit(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const checkRef = useRef([]);
@@ -55,7 +55,6 @@ function DxAssetEdit(props) {
 
   // MODE_MODIFY의 초기값 요청
   const retrieveDetail = () => {
-    console.log("/// retrieveDetail modeInfo.editURL", modeInfo);
     const retrieveDetailURL = modeInfo.editURL;
     const requestOptions = {
       method: "GET",
@@ -74,18 +73,13 @@ function DxAssetEdit(props) {
 
   const formObjValidator = (checkRef) => {
     if (checkRef.current[0].value === "") {
-      alert("게시판명은 필수 값입니다.");
+      alert("자료실명은 필수 값입니다.");
       return false;
     }
     if (checkRef.current[1].value === "") {
-      alert("게시판 소개는 필수 값입니다.");
+      alert("자료실 소개는 필수 값입니다.");
       return false;
     }
-    if (checkRef.current[2].value === "0") {
-      alert("첨부파일 가능 숫자는 필수 값입니다.");
-      return false;
-    }
-
     return true;
   };
 
@@ -103,7 +97,7 @@ function DxAssetEdit(props) {
         requestOptions, 
         (resp) => {
           if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
-            navigate({ pathname: URL.ADMIN_ASSET });
+            navigate({ pathname: URL.ADMIN_ASSETREF });
           } else {
             navigate(
               { pathname: URL.ERROR },
@@ -144,7 +138,7 @@ function DxAssetEdit(props) {
       (resp) => {
         if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
           alert("게시글이 사용 중지 되었습니다.");
-          navigate(URL.ADMIN_ASSET, { replace: true });
+          navigate(URL.ADMIN_ASSETREF, { replace: true });
         } else {
           alert("ERR : " + resp.resultMessage);
         }
@@ -191,8 +185,8 @@ function DxAssetEdit(props) {
                 <dd>
                   <input
                     className="f_input2 w_full" type="text" name="assetNm" title="" id="assetNm" placeholder=""
-                    onChange={(e) => setResult({ ...result, assetNm: e.target.value }) }
-                    ref={(el) => (checkRef.current[0] = el)}
+                    onChange={e => setResult({ ...result, assetNm: e.target.value }) }
+                    ref={e => (checkRef.current[0] = e)}
                     defaultValue={result.assetNm}
                   />
                 </dd>
@@ -205,8 +199,8 @@ function DxAssetEdit(props) {
                 <dd>
                   <textarea
                     className="f_txtar w_full h_100" name="assetIntrcn" id="assetIntrcn" cols="30" rows="10" placeholder=""
-                    onChange={(e) => handleInputChange("assetIntrcn", e.target.value)}
-                    ref={(el) => (checkRef.current[1] = el)}
+                    onChange={e => handleInputChange("assetIntrcn", e.target.value)}
+                    ref={e => (checkRef.current[1] = e)}
                     defaultValue={result.assetIntrcn}
                   ></textarea>
                 </dd>
@@ -218,8 +212,8 @@ function DxAssetEdit(props) {
                   {modeInfo.mode === CODE.MODE_CREATE && (
                     <label className="f_select w_150" htmlFor="assetTyCode">
                       <select id="assetTyCode" name="assetTyCode" title="자료실유형선택"
-                        onChange={(e) => setResult({ ...result, assetTyCode: e.target.value, }) }
-                        ref={(el) => (checkRef.current[2] = el)}
+                        onChange={e => setResult({ ...result, assetTyCode: e.target.value, }) }
+                        // ref={e => (checkRef.current[2] = e)}
                         value={result.assetTyCode}
                       >
                         {assetTyCodeOptions.map((option) => {
@@ -244,14 +238,12 @@ function DxAssetEdit(props) {
                       name="useAt"
                       radioGroup={useAtRadioGroup}
                       setValue={result.useAt}
-                      setter={(v) => setResult({ ...result, useAt: v }) }
+                      setter={v => setResult({ ...result, useAt: v }) }
                     />
                   )}
                   {/* 수정/조회 일때 변경 불가 */}
                   {modeInfo.mode === CODE.MODE_MODIFY && (
-                    <span>
-                      {result.replyPosblAt && getSelectedLabel( useAtRadioGroup, result.useAt )}
-                    </span>
+                    <span> {result.useAt && getSelectedLabel( useAtRadioGroup, result.useAt )} </span>
                   )}
                 </dd>
               </dl>
@@ -259,29 +251,21 @@ function DxAssetEdit(props) {
               {/* <!-- 버튼영역 --> */}
               <div className="asset_btn_area">
                 <div className="left_col btn1">
-
                   {modeInfo.mode === CODE.MODE_CREATE && (
-                    <button className="btn btn_skyblue_h46 w_100" onClick={() => updateAsset()} >
-                      저장
-                    </button>
+                    <button className="btn btn_skyblue_h46 w_100" onClick={() => updateAsset()} > 저장 </button>
                   )}
+
                   {modeInfo.mode === CODE.MODE_MODIFY && (
                     <>
-                      <button className="btn btn_skyblue_h46 w_100" onClick={() => updateAsset()} >
-                        수정
-                      </button>
+                      <button className="btn btn_skyblue_h46 w_100" onClick={() => updateAsset()} > 수정 </button>
           
-                      <button className="btn btn_skyblue_h46 w_100" onClick={() => { deleteBoardArticle(result.refId); }} >
-                        사용안함
-                      </button>
+                      <button className="btn btn_skyblue_h46 w_100" onClick={() => { result.useAt = "N"; updateAsset(); }} > 사용안함 </button>
                     </>
                   )}
                 </div>
 
                 <div className="right_col btn1">
-                  <Link to={URL.ADMIN_ASSET} className="btn btn_blue_h46 w_100">
-                    목록
-                  </Link>
+                  <Link to={URL.ADMIN_ASSETREF} className="btn btn_blue_h46 w_100"> 목록 </Link>
                 </div>
               </div>
               {/* <!--// 버튼영역 --> */}
@@ -296,4 +280,6 @@ function DxAssetEdit(props) {
   );
 }
 
-export default DxAssetEdit;
+export default DxAssetRefEdit;
+
+

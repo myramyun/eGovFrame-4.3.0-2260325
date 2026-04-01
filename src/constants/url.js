@@ -25,6 +25,12 @@ const URL = {
   SUPPORT_DOWNLOAD_DETAIL: "/support/download/detail", // 고객지원/자료실/상세
   SUPPORT_DOWNLOAD_CREATE: "/support/download/create", // 고객지원/자료실/등록
   SUPPORT_DOWNLOAD_MODIFY: "/support/download/modify", // 고객지원/자료실/등록
+
+  SUPPORT_ASSET: "/support/asset", // 사이트관리/자료실사용관리 목록
+  SUPPORT_ASSET_DETAIL: "/support/asset/detail", // 사이트관리/자료실사용관리 상세
+  SUPPORT_ASSET_CREATE: "/support/asset/create", // 사이트관리/자료실사용관리 등록
+  SUPPORT_ASSET_MODIFY: "/support/asset/modify", // 사이트관리/자료실사용관리 수정
+
   SUPPORT_QNA: "/support/qna", // 고객지원/묻고답하기
   SUPPORT_QNA_DETAIL: "/support/qna/detail", // 고객지원/묻고답하기/상세
   SUPPORT_APPLY: "/support/apply", // 고객지원/서비스신청
@@ -70,20 +76,20 @@ const URL = {
   ADMIN_SCHEDULE_CREATE: "/admin/schedule/create", // 사이트관리/일정관리생성
   ADMIN_SCHEDULE_MODIFY: "/admin/schedule/modify", // 사이트관리/일정관리수정
 
-  ADMIN_ASSET: "/admin/asset", // 사이트관리/자료실생성관리 목록
-  ADMIN_ASSET_DETAIL: "/admin/asset/detail", // 사이트관리/자료실생성관리 상세
-  ADMIN_ASSET_CREATE: "/admin/asset/create", // 사이트관리/자료실생성관리 등록
-  ADMIN_ASSET_MODIFY: "/admin/asset/modify", // 사이트관리/자료실생성관리 상세/수정
+  ADMIN_ASSETREF: "/admin/assetref", // 사이트관리/자료실생성관리 목록
+  ADMIN_ASSETREF_DETAIL: "/admin/assetref/detail", // 사이트관리/자료실생성관리 상세
+  ADMIN_ASSETREF_CREATE: "/admin/assetref/create", // 사이트관리/자료실생성관리 등록
+  ADMIN_ASSETREF_MODIFY: "/admin/assetref/modify", // 사이트관리/자료실생성관리 수정
 
   ADMIN_BOARD: "/admin/board", // 사이트관리/게시판생성관리 목록
   ADMIN_BOARD_DETAIL: "/admin/board/detail", // 사이트관리/게시판생성관리 상세
   ADMIN_BOARD_CREATE: "/admin/board/create", // 사이트관리/게시판생성관리 등록
-  ADMIN_BOARD_MODIFY: "/admin/board/modify", // 사이트관리/게시판생성관리 상세/수정
+  ADMIN_BOARD_MODIFY: "/admin/board/modify", // 사이트관리/게시판생성관리 수정
 
   ADMIN_USAGE: "/admin/usage", // 사이트관리/게시판사용관리 목록
   ADMIN_USAGE_DETAIL: "/admin/usage/detail", // 사이트관리/게시판사용관리 상세
   ADMIN_USAGE_CREATE: "/admin/usage/create", // 사이트관리/게시판사용관리 등록
-  ADMIN_USAGE_MODIFY: "/admin/usage/modify", // 사이트관리/게시판사용관리 상세/수정
+  ADMIN_USAGE_MODIFY: "/admin/usage/modify", // 사이트관리/게시판사용관리 수정
 
   ADMIN_NOTICE: "/admin/notice", // 사이트관리/공지사항관리 목록
   ADMIN_NOTICE_DETAIL: "/admin/notice/detail", // 사이트관리/공지사항관리 상세
@@ -101,7 +107,7 @@ const URL = {
   ADMIN_MEMBERS: "/admin/members", // 사이트관리/회원관리 목록기능
   ADMIN_MEMBERS_DETAIL: "/admin/members/detail", // 사이트관리/회원관리 상세
   ADMIN_MEMBERS_CREATE: "/admin/members/create", // 사이트관리/회원관리 등록
-  ADMIN_MEMBERS_MODIFY: "/admin/members/modify", // 사이트관리/회원관리 상세/수정
+  ADMIN_MEMBERS_MODIFY: "/admin/members/modify", // 사이트관리/회원관리 수정
 
   //MYPAGE
   MYPAGE_MODIFY: "/mypage/modify", // 고객지원/마이페이지/회원 수정

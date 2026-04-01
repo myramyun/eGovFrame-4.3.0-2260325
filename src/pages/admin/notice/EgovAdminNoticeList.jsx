@@ -12,25 +12,23 @@ import EgovPaging from "@/components/EgovPaging";
 import { itemIdxByPage } from "@/utils/calc";
 
 function EgovAdminNoticeList(props) {
-  console.group("EgovAdminNoticeList");
-  console.log("[Start] EgovAdminNoticeList ------------------------------");
-  console.log("EgovAdminNoticeList [props] : ", props);
-
   const cndRef = useRef();
   const wrdRef = useRef();
 
   const bbsId = NOTICE_BBS_ID;
 
-  // 공통 네비게이션 훅 사용
-  const { searchCondition, handlePageMove, handleSearch } = useListNavigation(bbsId);
-  const [masterBoard, setMasterBoard] = useState({});
+  // 기존 조회에서 접근 했을 시 || 신규로 접근 했을 시
+  const [searchCondition, setSearchCondition] = useState(
+    location.state?.searchCondition || { pageIndex: 1, searchCnd: "0", searchWrd: "", }
+  ); 
+
+  /// 페이지리스트와 페이지네이션
   const [paginationInfo, setPaginationInfo] = useState({});
+  const [resultList, setResultList] = useState([]);
 
   const [listTag, setListTag] = useState([]);
 
   const retrieveList = useCallback((searchCondition) => {
-    console.groupCollapsed("EgovAdminNoticeList.retrieveList()");
-
     const retrieveListURL = "/board" + EgovNet.getQueryString(searchCondition);
     const requestOptions = {
       method: "GET",
@@ -43,75 +41,71 @@ function EgovAdminNoticeList(props) {
       retrieveListURL,
       requestOptions,
       (resp) => {
-        setMasterBoard(resp.result.brdMstrVO);
         setPaginationInfo(resp.result.paginationInfo);
+        setResultList(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
+        // setMasterBoard(resp.result.brdMstrVO);
+        // setPaginationInfo(resp.result.paginationInfo);
 
-        let mutListTag = [];
+        // let mutListTag = [];
 
-        const resultCnt = parseInt(resp.result.resultCnt);
-        const currentPageNo = resp.result.paginationInfo.currentPageNo;
-        const pageSize = resp.result.paginationInfo.pageSize;
+        // const resultCnt = parseInt(resp.result.resultCnt);
+        // const currentPageNo = resp.result.paginationInfo.currentPageNo;
+        // const pageSize = resp.result.paginationInfo.pageSize;
 
-        // 리스트 항목 구성
-        resp.result.resultList.forEach(function (item, index) {
-          if (index === 0) mutListTag = []; // 목록 초기화
-          const listIdx = itemIdxByPage(
-            resultCnt,
-            currentPageNo,
-            pageSize,
-            index
-          );
+        // // 리스트 항목 구성
+        // resp.result.resultList.forEach(function (item, index) {
+        //   if (index === 0) mutListTag = []; // 목록 초기화
+        //   const listIdx = itemIdxByPage(
+        //     resultCnt,
+        //     currentPageNo,
+        //     pageSize,
+        //     index
+        //   );
 
-          mutListTag.push(
-            <Link
-              to={{ pathname: URL.ADMIN_NOTICE_DETAIL }}
-              state={{
-                nttId: item.nttId,
-                bbsId: item.bbsId,
-                searchCondition: searchCondition,
-              }}
-              key={listIdx}
-              className="list_item"
-            >
-              <div>{listIdx}</div>
-              {(item.replyLc * 1 ? true : false) && (
-                <>
-                  <div className="al reply">{item.nttSj}</div>
-                </>
-              )}
-              {(item.replyLc * 1 ? false : true) && (
-                <>
-                  <div className="al">{item.nttSj}</div>
-                </>
-              )}
-              <div>{item.frstRegisterNm}</div>
-              <div>{item.frstRegisterPnttm}</div>
-              <div>{item.inqireCo}</div>
-            </Link>
-          );
-        });
-        if (!mutListTag.length)
-          mutListTag.push(
-            <p className="no_data" key="0">
-              검색된 결과가 없습니다.
-            </p>
-          ); // 게시판 목록 초기값
-        setListTag(mutListTag);
+        //   mutListTag.push(
+        //     <Link
+        //       to={{ pathname: URL.ADMIN_NOTICE_DETAIL }}
+        //       state={{
+        //         nttId: item.nttId,
+        //         bbsId: item.bbsId,
+        //         searchCondition: searchCondition,
+        //       }}
+        //       key={listIdx}
+        //       className="list_item"
+        //     >
+        //       <div>{listIdx}</div>
+        //       {(item.replyLc * 1 ? true : false) && (
+        //         <>
+        //           <div className="al reply">{item.nttSj}</div>
+        //         </>
+        //       )}
+        //       {(item.replyLc * 1 ? false : true) && (
+        //         <>
+        //           <div className="al">{item.nttSj}</div>
+        //         </>
+        //       )}
+        //       <div>{item.frstRegisterNm}</div>
+        //       <div>{item.frstRegisterPnttm}</div>
+        //       <div>{item.inqireCo}</div>
+        //     </Link>
+        //   );
+        // });
+        // if (!mutListTag.length)
+        //   mutListTag.push(
+        //     <p className="no_data" key="0">
+        //       검색된 결과가 없습니다.
+        //     </p>
+        //   ); // 게시판 목록 초기값
+        // setListTag(mutListTag);
       },
       function (resp) {
-        console.log("err response : ", resp);
+        console.log("/// err response : ", resp);
       }
     );
-    console.groupEnd("EgovAdminNoticeList.retrieveList()");
   }, []);
 
-  useEffect(() => {
-    retrieveList(searchCondition);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { retrieveList(searchCondition); }, []);
 
-  console.log("------------------------------EgovAdminNoticeList [End]");
-  console.groupEnd("EgovAdminNoticeList");
   return (
     <div className="container">
       <div className="c_wrap">
