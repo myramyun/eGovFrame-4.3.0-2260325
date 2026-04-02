@@ -39,18 +39,12 @@ function EgovMain(props) {
           <div className="right_col">
             <div className="mini_board">
               <ul className="tab">
-                <li>
-                  <a href="#공지사항" className="on">
-                    공지사항
-                  </a>
-                </li>
-                <li>
-                  <a href="#갤러리">갤러리</a>
-                </li>
+                <li> <a href="#공지사항" className="on"> 공지사항 </a> </li>
+                <li> <a href="#갤러리">갤러리</a> </li>
               </ul>
               <div className="list">
-                <BoardList title="공지사항" items={noticeBoardList} detailUrl={URL.INFORM_NOTICE} moreUrl={URL.INFORM_NOTICE} className="notice" />
-                <BoardList title="갤러리" items={gallaryBoardList} detailUrl={URL.INFORM_GALLERY} moreUrl={URL.INFORM_GALLERY} className="gallary" />
+                <BoardList className="notice" title="공지사항" items={noticeBoardList} detailUrl={URL.INFORM_NOTICE} moreUrl={URL.INFORM_NOTICE}  />
+                <BoardList className="gallary" title="갤러리" items={gallaryBoardList} detailUrl={URL.INFORM_GALLERY} moreUrl={URL.INFORM_GALLERY} />
               </div>
             </div>
 
@@ -103,3 +97,5 @@ function EgovMain(props) {
 }
 
 export default EgovMain;
+
+

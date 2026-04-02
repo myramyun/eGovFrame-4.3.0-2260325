@@ -1,20 +1,16 @@
 /* /// RENEWAL */
-.p_MAIN .colbox { height: 900px; }
+.header h1 a, .header h1 img { max-width: 320px; max-height: 72px; }
+
+.P_MAIN .colbox { height: 900px; }
 .P_MAIN .colbox .left_col img { box-shadow: none; border-radius: 0; }
 
 .all_menu.WEB { display: flex; justify-content: center; }
 .all_menu.WEB .inner { width: fit-content; }
 .all_menu.WEB .inner .col { position: relative; width: 200px; }
 
-/* /// HEADER */
-.header h1 a, .header h1 img { max-width: 320px; max-height: 72px; }
-
 /* /// DxBANNER */
 .dxbnr .banner_item .m { display: none; }
-@media(max-width: 800px) {
-  .dxbnr .banner_item .w { display: none; }
-  .dxbnr .banner_item .m { display: block; }
-}
+@media(max-width: 800px) { .dxbnr .banner_item .w { display: none; } .dxbnr .banner_item .m { display: block; } }
 
 .dxbnr.xi { position: relative; --w: 100%; --h: 530px; font-size: 10px; padding: 0; margin: 0 0 8px 0; border-radius: 32px; overflow: hidden; box-shadow: 4px 4px 8px #ccc; } 
 .dxbnr.xi .inner { position: relative; width: var(--w); height: var(--h); }

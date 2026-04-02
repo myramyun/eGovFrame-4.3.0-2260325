@@ -14,13 +14,8 @@ import EgovImageGallery from "@/components/EgovImageGallery";
 import { getSessionItem } from "@/utils/storage";
 
 function EgovGalleryDetail(props) {
-  console.groupEnd("EgovGalleryDetail");
-  console.log("------------------------------");
-  console.log("EgovGalleryDetail [props] : ", props);
-
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("EgovGalleryDetail [location] : ", location);
 
   //관리자 권한 체크때문에 추가(아래)
   const sessionUser = getSessionItem("loginUser");
@@ -42,9 +37,7 @@ function EgovGalleryDetail(props) {
     const retrieveDetailURL = `/board/${bbsId}/${nttId}`;
     const requestOptions = {
       method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
+      headers: { "Content-type": "application/json", },
     };
     EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
       setMasterBoard(resp.result.brdMstrVO);
@@ -59,14 +52,11 @@ function EgovGalleryDetail(props) {
 
     const requestOptions = {
       method: "PATCH",
-      headers: {
-        "Content-type": "application/json",
-      },
+      headers: { "Content-type": "application/json", },
       body: JSON.stringify({ atchFileId: atchFileId }),
     };
 
     EgovNet.requestFetch(deleteBoardURL, requestOptions, (resp) => {
-      console.log("====>>> board delete= ", resp);
       if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
         alert("게시글이 삭제되었습니다.");
         navigate(URL.INFORM_GALLERY, { replace: true });
@@ -87,10 +77,7 @@ function EgovGalleryDetail(props) {
       return;
     }
     retrieveDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.groupEnd("EgovGalleryDetail");
 
   return (
     <div className="container">

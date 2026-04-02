@@ -4,9 +4,7 @@ export const fetchMainPage = async () => {
   const retrieveListURL = "/mainPage";
   const requestOptions = {
     method: "GET",
-    headers: {
-      "Content-type": "application/json",
-    },
+    headers: { "Content-type": "application/json", },
   };
 
   return new Promise((resolve, reject) => {
@@ -18,3 +16,5 @@ export const fetchMainPage = async () => {
     );
   });
 };
+
+

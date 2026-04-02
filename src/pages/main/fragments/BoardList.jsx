@@ -8,13 +8,7 @@ function BoardList({ title, items = [], detailUrl, moreUrl, className }) {
         {items.length > 0 ? (
           items.map((item) => (
             <li key={item.nttId}>
-              <Link
-                to={{ pathname: detailUrl }}
-                state={{
-                  nttId: item.nttId,
-                  bbsId: item.bbsId,
-                }}
-              >
+              <Link to={{ pathname: detailUrl }} state={{ nttId: item.nttId, bbsId: item.bbsId, }} >
                 {item.nttSj}
                 <span>{item.frstRegisterPnttm}</span>
               </Link>
@@ -24,11 +18,11 @@ function BoardList({ title, items = [], detailUrl, moreUrl, className }) {
           <li>검색된 결과가 없습니다.</li>
         )}
       </ul>
-      <Link to={moreUrl} className="more">
-        더보기
-      </Link>
+      <Link to={moreUrl} className="more"> 더보기 </Link>
     </div>
   );
 }
 
 export default BoardList;
+
+
