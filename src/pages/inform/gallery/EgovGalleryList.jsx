@@ -4,7 +4,7 @@ import { useListNavigation } from "@/hooks/useListNavigation";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
-import { GALLERY_BBS_ID } from "@/config";
+import { GALLERY_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
 import EgovPaging from "@/components/EgovPaging";
@@ -19,7 +19,7 @@ function EgovGalleryList(props) {
   const cndRef = useRef();
   const wrdRef = useRef();
 
-  const bbsId = GALLERY_BBS_ID;
+  const bbsId = GALLERY_BBS.id;
 
   // 공통 네비게이션 훅 사용
   const { searchCondition, handlePageMove, handleSearch } = useListNavigation(bbsId);

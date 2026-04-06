@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
-import { NOTICE_BBS_ID } from "@/config";
+import { NOTICE_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavAdmin";
 import EgovAttachFile from "@/components/EgovAttachFile";
@@ -17,7 +17,7 @@ function EgovAdminNoticeEdit(props) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const bbsId = location.state?.bbsId || NOTICE_BBS_ID;
+  const bbsId = location.state?.bbsId || NOTICE_BBS.id;
   const nttId = location.state?.nttId || "";
 
   const [modeInfo, setModeInfo] = useState({ mode: props.mode });
@@ -118,18 +118,12 @@ function EgovAdminNoticeEdit(props) {
     }
   };
 
-  const Location = React.memo(function Location(masterBoard) {
+  const Location = memo(() => {
     return (
       <div className="location">
         <ul>
-          <li>
-            <Link to={URL.MAIN} className="home">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to={URL.ADMIN}>사이트관리</Link>
-          </li>
+          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+          <li> <Link to={URL.ADMIN}>사이트관리</Link> </li>
           <li>{masterBoard && masterBoard.bbsNm}</li>
         </ul>
       </div>
@@ -144,25 +138,15 @@ function EgovAdminNoticeEdit(props) {
   return (
     <div className="container">
       <div className="c_wrap">
-        {/* <!-- Location --> */}
-        <Location />
-        {/* <!--// Location --> */}
+        <Location />{/* <!--// Location --> */}
 
         <div className="layout">
-          {/* <!-- Navigation --> */}
-          <EgovLeftNav></EgovLeftNav>
-          {/* <!--// Navigation --> */}
+          <EgovLeftNav />{/* <!--// Navigation --> */}
 
+          {/* <!-- 본문 --> */}
           <div className="contents NOTICE_LIST" id="contents">
-            {/* <!-- 본문 --> */}
-
-            <div className="top_tit">
-              <h1 className="tit_1">사이트관리</h1>
-            </div>
-
-            <h2 className="tit_2">
-              {masterBoard && masterBoard.bbsNm} {modeInfo.modeTitle}
-            </h2>
+            <div className="top_tit"> <h1 className="tit_1">사이트관리</h1> </div>
+            <h2 className="tit_2"> {masterBoard && masterBoard.bbsNm} {modeInfo.modeTitle} </h2>
 
             <div className="board_view2">
               <dl>

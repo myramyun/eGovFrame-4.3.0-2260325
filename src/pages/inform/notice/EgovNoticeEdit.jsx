@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
-import { NOTICE_BBS_ID } from "@/config";
+import { NOTICE_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
 import EgovAttachFile from "@/components/EgovAttachFile";
@@ -16,20 +16,21 @@ import { useDebouncedInput } from "@/hooks/useDebounce";
 function EgovNoticeEdit(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("EgovNoticeEdit [location] : ", location);
-  //관리자 권한 체크때문에 추가(아래)
-  const sessionUser = getSessionItem("loginUser");
-  const sessionUserSe = sessionUser?.userSe;
+  const [modeInfo, setModeInfo] = useState({ mode: props.mode });
 
-  const bbsId = location.state?.bbsId || NOTICE_BBS_ID;
+  /// 게사판
+  const bbsId = location.state?.bbsId || NOTICE_BBS.id; // 직접 URL 접근 시 location.state가 null일 수 있음
   const nttId = location.state?.nttId || "";
 
-  const [modeInfo, setModeInfo] = useState({ mode: props.mode });
-  const [masterBoard, setMasterBoard] = useState({});
-  const [boardDetail, setBoardDetail] = useState({ nttSj: "", nttCn: "" });
-  const [boardAttachFiles, setBoardAttachFiles] = useState();
+  const [board, setBoard] = useState({});
+  const [article, setArticle] = useState({ nttSj: "", nttCn: "" });
+  const [attachFiles, setAttachFiles] = useState();
 
-  const handleInputChange = useDebouncedInput(setBoardDetail, 300);
+  /// 사용자
+  const sessionUser = getSessionItem("loginUser"); // 관리자 권한 체크
+  const sessionUserSe = sessionUser?.userSe;
+
+  const handleInputChange = useDebouncedInput(setArticle, 300);
 
   const initMode = () => {
     switch (props.mode) {
@@ -48,207 +49,145 @@ function EgovNoticeEdit(props) {
     retrieveDetail();
   };
 
+  /// Read
   const retrieveDetail = () => {
     if (modeInfo.mode === CODE.MODE_CREATE) {
-      // 등록이면 마스터 정보에서 파일 첨부 가능 여부 조회함
+      // 등록이면 마스터 정보에서 파일 첨부 가능 여부 조회
       const retrieveDetailURL = `/boardFileAtch/${bbsId}`;
-      const requestOptions = {
-        method: "GET",
-        headers: { "Content-type": "application/json", },
-      };
-
+      const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
       EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
-        setMasterBoard(resp.result);
+        setBoard({ ...resp.result.brdMstrVO, bbsNm: NOTICE_BBS.nm });
       });
 
-      setBoardDetail({ bbsId: bbsId, nttSj: "", nttCn: "" });
-      return;
-    }
+      setArticle({ bbsId: bbsId, nttSj: "", nttCn: "" });
 
-    const retrieveDetailURL = `/board/${bbsId}/${nttId}`;
-    const requestOptions = {
-      method: "GET",
-      headers: { "Content-type": "application/json", }, 
-    };
+    } else { /// CODE.MODE_MODIFY, CODE.MODE_REPLY
+      const retrieveDetailURL = `/board/${bbsId}/${nttId}`;
+      const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
-    EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
-      setMasterBoard(resp.result.brdMstrVO);
-
-      // 초기 boardDetail 설정 => ( 답글 / 수정 ) 모드일때...
-      if (modeInfo.mode === CODE.MODE_REPLY) {
-        // 답글모드이면 RE: 붙여줌
-        setBoardDetail({
-          ...resp.result.boardVO,
-          nttSj: "RE: " + resp.result.boardVO.nttSj,
-          nttCn: "",
-          inqireCo: 0,
-          atchFileId: "",
-        });
-      } else if (modeInfo.mode === CODE.MODE_MODIFY) {
-        setBoardDetail(resp.result.boardVO);
-        console.log("/// resp.result.resultFiles", resp.result.resultFiles);
-        setBoardAttachFiles(resp.result.resultFiles);
-      }
-    });
-  };
-
-  const updateBoard = () => {
-    const formData = new FormData();
-    for (let key in boardDetail) {
-      formData.append(key, boardDetail[key]);
-      //console.log("boardDetail [%s] ", key, boardDetail[key]);
-    }
-
-    if (bbsFormVaildator(formData)) {
-      const requestOptions = {
-        method: modeInfo.method,
-        body: formData,
-      };
-
-      EgovNet.requestFetch(modeInfo.editURL, requestOptions, (resp) => {
-        if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
-          navigate(URL.INFORM_NOTICE, { state: { bbsId: bbsId } });
-        } else {
-          // alert("ERR : " + resp.message);
-          navigate(
-            { pathname: URL.ERROR },
-            { state: { msg: resp.resultMessage } }
-          );
+      EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
+        setBoard(resp.result.brdMstrVO);
+        if (modeInfo.mode === CODE.MODE_MODIFY) {
+          setArticle(resp.result.boardVO);
+          setAttachFiles(resp.result.resultFiles);
+        } else if (modeInfo.mode === CODE.MODE_REPLY) {
+          setArticle({
+            ...resp.result.boardVO,
+            nttSj: "RE: " + resp.result.boardVO.nttSj, // 답글모드 "RE: " 추가
+            nttCn: "",
+            inqireCo: 0,
+            atchFileId: "",
+          });
         }
       });
     }
   };
 
-  const Location = React.memo(function Location(masterBoard) {
+  /// Create, Update
+  const saveBoard = () => { 
+    const formData = new FormData();
+    for (let key in article) { formData.append(key, article[key]); }
+
+    if (bbsFormVaildator(formData)) {
+      const requestOptions = { method: modeInfo.method, body: formData, };
+
+      EgovNet.requestFetch(
+        modeInfo.editURL, 
+        requestOptions, 
+        (resp) => {
+          if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
+            navigate(URL.INFORM_NOTICE, { state: { bbsId: bbsId } });
+          } else {
+            navigate( { pathname: URL.ERROR }, { state: { msg: resp.resultMessage } } );
+          }
+        }
+      );
+    }
+  };
+
+  const Breadcrumbs = memo(() => {
     return (
       <div className="location">
         <ul>
-          <li>
-            <Link to={URL.MAIN} className="home">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to={URL.ADMIN}>사이트관리</Link>
-          </li>
-          <li>{masterBoard && masterBoard.bbsNm}</li>
+          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+          <li> <Link to={URL.INFORM}>알림마당</Link> </li>
+          <li>{board && board.bbsNm}</li>
         </ul>
       </div>
     );
   });
 
-  useEffect(function () {
-    initMode();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.groupEnd("EgovNoticeEdit");
+  useEffect(function () { initMode(); }, []);
 
   return (
     <div className="container">
       <div className="c_wrap">
-        {/* <!-- Location --> */}
-        <Location />
-        {/* <!--// Location --> */}
+        <Breadcrumbs />{/* <!--// Breadcrumbs --> */}
 
         <div className="layout">
-          {/* <!-- Navigation --> */}
-          <EgovLeftNav></EgovLeftNav>
-          {/* <!--// Navigation --> */}
+          <EgovLeftNav />{/* <!--// Navigation --> */}
 
+          {/* <!-- 본문 --> */}
           <div className="contents NOTICE_LIST" id="contents">
-            {/* <!-- 본문 --> */}
-
-            <div className="top_tit">
-              <h1 className="tit_1">알림마당</h1>
-            </div>
-
-            <h2 className="tit_2">
-              {masterBoard && masterBoard.bbsNm} {modeInfo.modeTitle}
-            </h2>
+            
+            <div className="top_tit"> <h1 className="tit_1">알림마당</h1> </div>
+            <h2 className="tit_2"> {board && board.bbsNm} {modeInfo.modeTitle} </h2>
 
             <div className="board_view2">
               <dl>
                 <dt>
-                  <label htmlFor="nttSj">
-                    제목<span className="req">필수</span>
-                  </label>
+                  <label htmlFor="nttSj"> 제목<span className="req">필수</span> </label>
                 </dt>
                 <dd>
-                  <input
-                    className="f_input2 w_full"
-                    id="nttSj"
-                    name="nttSj"
-                    type="text"
-                    defaultValue={boardDetail.nttSj}
-                    onChange={(e) =>
-                      setBoardDetail({ ...boardDetail, nttSj: e.target.value })
-                    }
-                    maxLength="60"
+                  <input className="f_input2 w_full" id="nttSj" name="nttSj" type="text"  maxLength="60" 
+                    defaultValue={article.nttSj} 
+                    onChange={e => setArticle({ ...article, nttSj: e.target.value })}
                   />
                 </dd>
               </dl>
               <dl>
                 <dt>
-                  <label htmlFor="nttCn">
-                    내용<span className="req">필수</span>
-                  </label>
+                  <label htmlFor="nttCn"> 내용<span className="req">필수</span> </label>
                 </dt>
                 <dd>
-                  <textarea
-                    className="f_txtar w_full h_200"
-                    id="nttCn"
-                    name="nttCn"
-                    cols="30"
-                    rows="10"
-                    placeholder=""
-                    defaultValue={boardDetail.nttCn}
+                  <textarea className="f_txtar w_full h_200" id="nttCn" name="nttCn" cols="30" rows="10" placeholder=""
+                    defaultValue={article.nttCn}
                     onChange={(e) => handleInputChange("nttCn", e.target.value)}
                   ></textarea>
                 </dd>
               </dl>
               {/* 답글이 아니고 게시판 파일 첨부 가능 상태에서만 첨부파일 컴포넌트 노출 */}
-              {modeInfo?.mode !== CODE.MODE_REPLY &&
-                masterBoard.fileAtchPosblAt === "Y" && (
-                  <EgovAttachFile
-                    fnChangeFile={(attachfile) => {
-                      console.log(
-                        "====>>> Changed attachfile file = ",
-                        attachfile
-                      );
-                      const arrayConcat = { ...boardDetail }; // 기존 단일 파일 업로드에서 다중파일 객체 추가로 변환(아래 for문으로)
-                      for (let i = 0; i < attachfile.length; i++) {
-                        arrayConcat[`file_${i}`] = attachfile[i];
-                      }
-                      setBoardDetail(arrayConcat);
-                    }}
-                    fnDeleteFile={(deletedFile) => {
-                      console.log("====>>> Delete deletedFile = ", deletedFile);
-                      setBoardAttachFiles(deletedFile);
-                    }}
-                    boardFiles={boardAttachFiles}
-                    mode={props.mode}
-                    posblAtchFileNumber={masterBoard.posblAtchFileNumber}
-                  />
-                )}
+              {modeInfo?.mode !== CODE.MODE_REPLY && board.fileAtchPosblAt === "Y" && (
+                <EgovAttachFile
+                  fnChangeFile={(attachfile) => {
+                    console.log( "====>>> Changed attachfile file = ", attachfile );
+                    const arrayConcat = { ...article }; // 기존 단일 파일 업로드에서 다중파일 객체 추가로 변환(아래 for문으로)
+                    for (let i = 0; i < attachfile.length; i++) {
+                      arrayConcat[`file_${i}`] = attachfile[i];
+                    }
+                    setArticle(arrayConcat);
+                  }}
+                  fnDeleteFile={(deletedFile) => {
+                    console.log("====>>> Delete deletedFile = ", deletedFile);
+                    setAttachFiles(deletedFile);
+                  }}
+                  boardFiles={attachFiles}
+                  mode={props.mode}
+                  posblAtchFileNumber={board.posblAtchFileNumber}
+                />
+              )}
               {/* <!-- 버튼영역 --> */}
               <div className="board_btn_area">
                 {sessionUserSe === "ADM" && (
                   <div className="left_col btn1">
-                    <button
-                      className="btn btn_skyblue_h46 w_100"
-                      onClick={() => updateBoard()}
-                    >
+                    <button className="btn btn_skyblue_h46 w_100" onClick={() => saveBoard()} >
                       저장
                     </button>
                   </div>
                 )}
 
                 <div className="right_col btn1">
-                  <Link
-                    to={URL.INFORM_NOTICE}
-                    className="btn btn_blue_h46 w_100"
-                  >
+                  <Link to={URL.INFORM_NOTICE} className="btn btn_blue_h46 w_100" >
                     목록
                   </Link>
                 </div>
@@ -256,8 +195,9 @@ function EgovNoticeEdit(props) {
               {/* <!--// 버튼영역 --> */}
             </div>
 
-            {/* <!--// 본문 --> */}
           </div>
+          {/* <!--// 본문 --> */}
+
         </div>
       </div>
     </div>

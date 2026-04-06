@@ -10,9 +10,9 @@ function EgovLeftNavAdmin() {
           <li> <NavLink to={URL.ADMIN_SCHEDULE} className={({ isActive }) => (isActive ? "cur" : "")} > 일정관리 </NavLink> </li>
           <li> <NavLink to={URL.ADMIN_ASSETREF} className={({ isActive }) => (isActive ? "cur" : "")} > 자료실관리 </NavLink> </li>
           <li> <NavLink to={URL.ADMIN_BOARD} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판관리 </NavLink> </li>
-          {/* <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li> */}
+          <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li>
           <li> <NavLink to={URL.ADMIN_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항관리 </NavLink> </li>
-          <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트갤러리관리 </NavLink> </li>
+          <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 갤러리관리 </NavLink> </li>
           <li> <NavLink to={URL.ADMIN_MANAGER} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리자 암호변경 </NavLink> </li>
           <li> <NavLink to={URL.ADMIN_MEMBERS} className={({ isActive }) => (isActive ? "cur" : "")} > 회원관리 </NavLink> </li>
         </ul>

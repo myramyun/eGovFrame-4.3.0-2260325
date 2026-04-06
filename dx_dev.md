@@ -1,3 +1,17 @@
+# 260406
+헨젤과 그레텔이 길을 잃지 않으려고 남긴 '빵부스러기' Breadcrumbs
+const Breadcrumbs = memo(() => {
+    return (
+      <div className="location">
+        <ul>
+          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+          <li> <Link to={URL.INFORM}>알림마당</Link> </li>
+          <li>{masterBoard && masterBoard.bbsNm}</li>
+        </ul>
+      </div>
+    )
+  })
+
 
 
 

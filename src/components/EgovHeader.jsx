@@ -137,7 +137,7 @@ function EgovHeader() {
               <li> <NavLink to={URL.INFORM_DAILY}>오늘의 행사</NavLink> </li>
               <li> <NavLink to={URL.INFORM_WEEKLY} className={({ isActive }) => (isActive ? "cur" : "")} > 금주의 행사 </NavLink> </li>
               <li> <NavLink to={URL.INFORM_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항 </NavLink> </li>
-              <li> <NavLink to={URL.INFORM_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트 갤러리 </NavLink> </li>
+              <li> <NavLink to={URL.INFORM_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 갤러리 </NavLink> </li>
             </ul>
           </div>
           <div className="col">
@@ -169,7 +169,7 @@ function EgovHeader() {
                 <li> <NavLink to={URL.ADMIN_BOARD} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판생성관리 </NavLink> </li>
                 {/* <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li> */}
                 <li> <NavLink to={URL.ADMIN_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항관리 </NavLink> </li>
-                <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트갤러리관리 </NavLink> </li>
+                <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 갤러리관리 </NavLink> </li>
                 <li> <NavLink to={URL.ADMIN_MANAGER} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리자 암호변경 </NavLink> </li>
                 <li> <NavLink to={URL.ADMIN_MEMBERS} className={({ isActive }) => (isActive ? "cur" : "")} > 회원관리 </NavLink> </li>
               </ul>
@@ -221,7 +221,7 @@ function EgovHeader() {
               <li> <NavLink to={URL.INFORM_DAILY}>오늘의 행사</NavLink> </li>
               <li> <NavLink to={URL.INFORM_WEEKLY} className={({ isActive }) => (isActive ? "cur" : "")} > 금주의 행사 </NavLink> </li>
               <li> <NavLink to={URL.INFORM_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항 </NavLink> </li>
-              <li> <NavLink to={URL.INFORM_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트 갤러리 </NavLink> </li>
+              <li> <NavLink to={URL.INFORM_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 갤러리 </NavLink> </li>
             </ul>
           </div>
           <h3> <Link to={URL.PRODUCT}>쇼핑몰</Link> </h3>
@@ -254,7 +254,7 @@ function EgovHeader() {
                   <li> <NavLink to={URL.ADMIN_BOARD} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판생성관리 </NavLink> </li>
                   {/* <li> <NavLink to={URL.ADMIN_USAGE} className={({ isActive }) => (isActive ? "cur" : "")} > 게시판사용관리 </NavLink> </li> */}
                   <li> <NavLink to={URL.ADMIN_NOTICE} className={({ isActive }) => (isActive ? "cur" : "")} > 공지사항관리 </NavLink> </li>
-                  <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트갤러리관리 </NavLink> </li>
+                  <li> <NavLink to={URL.ADMIN_GALLERY} className={({ isActive }) => (isActive ? "cur" : "")} > 갤러리관리 </NavLink> </li>
                   <li> <NavLink to={URL.ADMIN_MANAGER} className={({ isActive }) => (isActive ? "cur" : "")} > 사이트관리자 암호변경 </NavLink> </li>
                   <li> <NavLink to={URL.ADMIN_MEMBERS} className={({ isActive }) => (isActive ? "cur" : "")} > 회원관리 </NavLink> </li>
                 </ul>

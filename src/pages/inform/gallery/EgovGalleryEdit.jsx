@@ -5,7 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
-import { GALLERY_BBS_ID } from "@/config";
+import { GALLERY_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
 import EgovAttachFile from "@/components/EgovAttachFile";
@@ -25,7 +25,7 @@ function EgovGalleryEdit(props) {
   const location = useLocation();
   console.log("EgovGalleryEdit [location] : ", location);
 
-  const bbsId = location.state?.bbsId || GALLERY_BBS_ID;
+  const bbsId = location.state?.bbsId || GALLERY_BBS.id;
   const nttId = location.state?.nttId || "";
 
   const [modeInfo, setModeInfo] = useState({ mode: props.mode });

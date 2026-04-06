@@ -6,7 +6,7 @@ import { useListNavigation } from "@/hooks/useListNavigation";
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
-import { GALLERY_BBS_ID } from "@/config";
+import { GALLERY_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavAdmin";
 import EgovAttachFile from "@/components/EgovAttachFile";
@@ -22,7 +22,7 @@ function EgovAdminGalleryDetail(props) {
   console.log("EgovAdminGalleryDetail [location] : ", location);
 
   // 직접 URL 접근 시 location.state가 null일 수 있음
-  const bbsId = location.state?.bbsId || GALLERY_BBS_ID;
+  const bbsId = location.state?.bbsId || GALLERY_BBS.id;
   const nttId = location.state?.nttId;
   const searchCondition = location.state?.searchCondition;
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { memo, useState, useEffect } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useListNavigation } from "@/hooks/useListNavigation";
@@ -6,22 +6,18 @@ import { useListNavigation } from "@/hooks/useListNavigation";
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
-import { NOTICE_BBS_ID } from "@/config";
+import { NOTICE_BBS } from "@/config";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavAdmin";
 import EgovAttachFile from "@/components/EgovAttachFile";
+import { getSessionItem } from "@/utils/storage";
 
 function EgovAdminNoticeDetail(props) {
-  console.group("EgovAdminNoticeDetail");
-  console.log("------------------------------");
-  console.log("EgovAdminNoticeDetail [props] : ", props);
-
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("EgovAdminNoticeDetail [location] : ", location);
 
   // 직접 URL 접근 시 location.state가 null일 수 있음
-  const bbsId = location.state?.bbsId || NOTICE_BBS_ID;
+  const bbsId = location.state?.bbsId || NOTICE_BBS.id;
   const nttId = location.state?.nttId;
   const searchCondition = location.state?.searchCondition;
 
@@ -29,19 +25,17 @@ function EgovAdminNoticeDetail(props) {
   const { getBackToListURL } = useListNavigation(bbsId);
 
   const [masterBoard, setMasterBoard] = useState({});
+  const [user, setUser] = useState({});
   const [boardDetail, setBoardDetail] = useState({});
   const [boardAttachFiles, setBoardAttachFiles] = useState();
 
   const retrieveDetail = () => {
     const retrieveDetailURL = `/board/${bbsId}/${nttId}`;
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
+    const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
+
     EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
       setMasterBoard(resp.result.brdMstrVO);
+      setUser(resp.result.user);
       setBoardDetail(resp.result.boardVO);
       setBoardAttachFiles(resp.result.resultFiles);
     });
@@ -49,14 +43,7 @@ function EgovAdminNoticeDetail(props) {
 
   const onClickDeleteBoardArticle = (bbsId, nttId, atchFileId) => {
     const deleteBoardURL = `/board/${bbsId}/${nttId}`;
-
-    const requestOptions = {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ atchFileId: atchFileId })
-    };
+    const requestOptions = { method: "PATCH", headers: { "Content-type": "application/json", }, body: JSON.stringify({ atchFileId: atchFileId }) };
 
     EgovNet.requestFetch(deleteBoardURL, requestOptions, (resp) => {
       console.log("====>>> board delete= ", resp);
@@ -72,6 +59,18 @@ function EgovAdminNoticeDetail(props) {
     });
   };
 
+  const Location = memo(() => {
+    return (
+      <div className="location">
+        <ul>
+          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+          <li> <Link to={URL.ADMIN}>사이트관리</Link> </li>
+          <li>{masterBoard && masterBoard.bbsNm}</li>
+        </ul>
+      </div>
+    )
+  })
+
   useEffect(function () {
     // nttId가 없으면 관리자 공지사항 목록으로 리다이렉트
     if (!nttId) {
@@ -80,42 +79,19 @@ function EgovAdminNoticeDetail(props) {
       return;
     }
     retrieveDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.groupEnd("EgovAdminNoticeDetail");
 
   return (
     <div className="container">
       <div className="c_wrap">
-        {/* <!-- Location --> */}
-        <div className="location">
-          <ul>
-            <li>
-              <Link to={URL.MAIN} className="home">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link to={URL.ADMIN}>사이트관리</Link>
-            </li>
-            <li>{masterBoard && masterBoard.bbsNm}</li>
-          </ul>
-        </div>
-        {/* <!--// Location --> */}
+        <Location />{/* <!--// Location --> */}
 
         <div className="layout">
-          {/* <!-- Navigation --> */}
-          <EgovLeftNav></EgovLeftNav>
-          {/* <!--// Navigation --> */}
+          <EgovLeftNav />{/* <!--// Navigation --> */}
 
-          <div className="contents NOTICE_VIEW" id="contents">
-            {/* <!-- 본문 --> */}
-
-            <div className="top_tit">
-              <h1 className="tit_1">사이트관리</h1>
-            </div>
-
+          {/* <!-- 본문 --> */}
+          <div className="contents NOTICE_VIEW" id="contents">  
+            <div className="top_tit"> <h1 className="tit_1">사이트관리</h1> </div>
             <h2 className="tit_2">{masterBoard && masterBoard.bbsNm}</h2>
 
             {/* <!-- 게시판 상세보기 --> */}
@@ -123,29 +99,14 @@ function EgovAdminNoticeDetail(props) {
               <div className="board_view_top">
                 <div className="tit">{boardDetail && boardDetail.nttSj}</div>
                 <div className="info">
-                  <dl>
-                    <dt>작성자</dt>
-                    <dd>{boardDetail && boardDetail.frstRegisterNm}</dd>
-                  </dl>
-                  <dl>
-                    <dt>작성일</dt>
-                    <dd>{boardDetail && boardDetail.frstRegisterPnttm}</dd>
-                  </dl>
-                  <dl>
-                    <dt>조회수</dt>
-                    <dd>{boardDetail && boardDetail.inqireCo}</dd>
-                  </dl>
+                  <dl> <dt>작성자</dt> <dd>{boardDetail && boardDetail.frstRegisterNm}</dd> </dl>
+                  <dl> <dt>작성일</dt> <dd>{boardDetail && boardDetail.frstRegisterPnttm}</dd> </dl>
+                  <dl> <dt>조회수</dt> <dd>{boardDetail && boardDetail.inqireCo}</dd> </dl>
                 </div>
               </div>
 
               <div className="board_article">
-                <textarea
-                  name=""
-                  cols="30"
-                  rows="10"
-                  readOnly="readonly"
-                  defaultValue={boardDetail && boardDetail.nttCn}
-                ></textarea>
+                <textarea name="" cols="30" rows="10" readOnly="readonly" defaultValue={boardDetail && boardDetail.nttCn} ></textarea>
               </div>
               <div className="board_attach">
                 {/* 답글이 아니고 게시판 파일 첨부 가능 상태에서만 첨부파일 컴포넌트 노출 */}
@@ -208,8 +169,9 @@ function EgovAdminNoticeDetail(props) {
             </div>
             {/* <!-- 게시판 상세보기 --> */}
 
-            {/* <!--// 본문 --> */}
           </div>
+          {/* <!--// 본문 --> */}
+
         </div>
       </div>
     </div>
