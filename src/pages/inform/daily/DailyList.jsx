@@ -30,7 +30,7 @@ function DailyList(props) {
     const { year: y, month: m, date: d } = searchCondition;
 
     v.d = new Date( v.y ? y + o : y, v.m ? m + o : m, v.d ? d + o : d );
-    
+
     setSearchCondition({
       ...searchCondition,
       year: v.d.getFullYear(),
@@ -39,10 +39,9 @@ function DailyList(props) {
     });
   };
 
-  /// init 초기 요청 및 조건 요청
   const [resultList, setResultList] = useState([]);
-  const retrieveList = useCallback((srchcnd) => {
-    const requestURL = "/schedule/daily" + EgovNet.getQueryString(srchcnd);
+  const retrieveList = useCallback((srchCnd) => {
+    const requestURL = "/schedule/daily" + EgovNet.getQueryString(srchCnd);
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
     EgovNet.requestFetch(
@@ -124,15 +123,13 @@ function DailyList(props) {
               </div>
               <div className="result">
                 {(resultList.length == 0 ? (
-                    <p className="no_data" key="0">
-                      검색된 결과가 없습니다.
-                    </p>
+                    <p className="no_data" key="0"> 일정이 존재하지 않습니다. </p>
                   ) : (
-                    resultList.map((item, index) => (
-                      <Link key={index} className="list_item" to={{ pathname: URL.INFORM_DAILY_DETAIL }} state={{ schdulId: item.schdulId, prevPath: URL.INFORM_DAILY, }} >
-                        <div> {getTimeForm(item.schdulBgnde)} ~ {getTimeForm(item.schdulEndde)} </div>
-                        <div className="al">{item.schdulNm}</div>
-                        <div>{item.userNm}</div>
+                    resultList.map((e, i) => (
+                      <Link key={i} className="list_item" to={{ pathname: URL.INFORM_DAILY_DETAIL }} state={{ schdulId: e.schdulId, prevPath: URL.INFORM_DAILY, }} >
+                        <div> {getTimeForm(e.schdulBgnde)} ~ {getTimeForm(e.schdulEndde)} </div>
+                        <div className="al">{e.schdulNm}</div>
+                        <div>{e.userNm}</div>
                       </Link>
                     ))
                   )

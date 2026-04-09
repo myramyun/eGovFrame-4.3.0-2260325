@@ -4,79 +4,67 @@ import { Link, useLocation } from "react-router-dom";
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 
-import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavSupport";
+import { default as TagLeftNav } from "@/components/leftmenu/EgovLeftNavSupport";
 import EgovPaging from "@/components/EgovPaging";
 
 import { itemIdxByPage } from "@/utils/calc";
 
 import samplePdsListImg from "/assets/images/sample_pds_list.png";
 
-function EgovDownloadList() {
+function DownloadList() {
   const location = useLocation();
 
   const cndRef = useRef();
   const wrdRef = useRef();
 
   const [searchCondition, setSearchCondition] = useState(
-    location.state?.searchCondition || {
-      pageIndex: 1,
-      searchCnd: "0",
-      searchWrd: "",
-    }
+    location.state?.searchCondition || { pageIndex: 1, searchCnd: "0", searchWrd: "", }
   ); // 기존 조회에서 접근 했을 시 || 신규로 접근 했을 시
 
   /// 페이지리스트와 페이지네이션
   const [paginationInfo, setPaginationInfo] = useState({});
   const [resultList, setResultList] = useState([]);
 
+  /// srchCnd {bbsId: 'BBSMSTR_AAAAAAAAAAAA', pageIndex: 1, searchCnd: '0', searchWrd: ''}
   const retrieveList = useCallback((srchCnd) => {
-      const retrieveListURL = "/bbsUseInf" + EgovNet.getQueryString(srchCnd);
-      const requestOptions = {
-        method: "GET",
-        headers: { "Content-type": "application/json", },
-      };
+    const retrieveListURL = "/bbsUseInf" + EgovNet.getQueryString(srchCnd);
+    const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
-      EgovNet.requestFetch(
-        retrieveListURL,
-        requestOptions,
-        (resp) => {
-          setPaginationInfo(resp.result.paginationInfo);
-          setResultList(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
-        },
-        (resp) => { console.log("/// err response : ", resp); }
-      );
-    },
-    [resultList, searchCondition]
+    EgovNet.requestFetch(
+      retrieveListURL,
+      requestOptions,
+      (resp) => {
+        setPaginationInfo(resp.result.paginationInfo);
+        setResultList(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
+      },
+      (resp) => { console.log("/// err response : ", resp); }
+    );
+  }, []);
+
+  const TagBreadcrumbs = () => (
+    <div className="location">
+      <ul>
+        <li> <Link to="" className="home"> Home </Link> </li>
+        <li> <Link to="">고객지원</Link> </li>
+        <li>자료실</li>
+      </ul>
+    </div>
   );
 
-    useEffect(() => { retrieveList(searchCondition); }, []);
-
-
-
-
-
+  useEffect(() => { retrieveList(searchCondition); }, []);
 
   return (
     <div className="container">
       <div className="c_wrap">
-        {/* <!-- Location --> */}
-        <div className="location">
-          <ul>
-            <li> <Link to="" className="home"> Home </Link> </li>
-            <li> <Link to="">고객지원</Link> </li>
-            <li>자료실</li>
-          </ul>
-        </div>
-        {/* <!--// Location --> */}
+        <TagBreadcrumbs /> {/* <!--// Breadcrumbs --> */}
 
         <div className="layout">
-          <EgovLeftNav /> {/* <!--// Navigation --> */}
+          <TagLeftNav /> {/* <!--// Navigation --> */}
 
           {/* <!-- 본문 --> */}
           <div className="contents PDS_LIST" id="contents">
             <div className="top_tit"> <h1 className="tit_1">고객지원</h1> </div>
             <h2 className="tit_2">자료실</h2>
-            {/* <h2 className="tit_7">본 화면은 디자인 예시임</h2> */}
 
             {/* <!-- 검색조건 --> */}
             <div className="condition">
@@ -106,9 +94,8 @@ function EgovDownloadList() {
             </div>
             {/* <!--// 검색조건 --> */}
 
-            <h3 className="tit_5">추천 다운로드 자료</h3>
-
             {/* <!-- 추천 --> */}
+            <h3 className="tit_5">추천 다운로드 자료</h3>
             <div className="pdslist">
               <ul>
                 <li>
@@ -163,9 +150,8 @@ function EgovDownloadList() {
             </div>
             {/* <!--// 추천 --> */}
 
-            <h3 className="tit_5">최신 등록 자료</h3>
-
             {/* <!-- 최신 --> */}
+            <h3 className="tit_5">최신 등록 자료</h3>
             <div className="recent">
               <ul className="left_col">
                 <li>
@@ -359,6 +345,6 @@ function EgovDownloadList() {
   );
 }
 
-export default EgovDownloadList;
+export default DownloadList;
 
 

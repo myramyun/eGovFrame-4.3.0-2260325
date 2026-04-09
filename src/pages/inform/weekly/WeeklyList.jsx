@@ -33,8 +33,8 @@ function WeeklyList(props) {
     const { o } = v;
     const { year: y, month: m, date: d } = searchCondition;
 
-    v.d = new Date( v.y ? y + o : y, v.m ? m + o : m, v.w ? d +7*o : d );
-
+    v.d = new Date( v.y ? y + o : y, v.m ? m + o : m, v.w ? d+7*o : d );
+    console.log("/// v.d", v.d, getWeekOfMonth(v.d));
     setSearchCondition({
       ...searchCondition,
       year: v.d.getFullYear(),
@@ -46,8 +46,8 @@ function WeeklyList(props) {
   };
 
   const [resultList, setResultList] = useState([]);
-  const retrieveList = useCallback((srchcnd) => {
-    const requestURL = "/schedule/week" + EgovNet.getQueryString(srchcnd);
+  const retrieveList = useCallback((srchCnd) => {
+    const requestURL = "/schedule/week" + EgovNet.getQueryString(srchCnd);
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
     EgovNet.requestFetch(
@@ -153,7 +153,7 @@ function WeeklyList(props) {
                           <span>일정이 존재하지 않습니다.</span> 
                         ) : ( 
                           daily.map((e, i) => ( 
-                            <Link key = {i} to = {{ pathname: URL.INFORM_WEEKLY_DETAIL }} state = {{ schdulId: e.schdulId, prevPath: URL.INFORM_WEEKLY, }} >
+                            <Link key = {i} to = {{ pathname: URL.INFORM_DAILY_DETAIL }} state = {{ schdulId: e.schdulId, prevPath: URL.INFORM_WEEKLY, }} >
                               <span> {getTimeForm(e.schdulBgnde)} ~ {getTimeForm(e.schdulEndde)} </span>
                               <span>{e.schdulNm}</span>
                               <span>{e.userNm}</span>

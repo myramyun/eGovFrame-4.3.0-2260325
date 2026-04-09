@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useListNavigation } from "@/hooks/useListNavigation";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
@@ -21,6 +22,10 @@ function GalleryEdit(props) {
   /// 게시판
   const bbsId = location.state?.bbsId || GALLERY_BBS.id;
   const nttId = location.state?.nttId || "";
+  const searchCondition = location.state?.searchCondition;
+
+  // 공통 네비게이션 훅 사용 (목록으로 돌아가기 URL 생성용)
+  const { getBackToListURL } = useListNavigation(bbsId);
 
   const [board, setBoard] = useState({});
   const [article, setArticle] = useState({ nttSj: "", nttCn: "" });
@@ -106,7 +111,8 @@ function GalleryEdit(props) {
         requestOptions, 
         (resp) => {
         if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
-          navigate(URL.INFORM_GALLERY, { state: { bbsId: bbsId } });
+          // navigate(URL.INFORM_GALLERY, { state: { bbsId: bbsId },  });
+          navigate(getBackToListURL(URL.INFORM_GALLERY, searchCondition), { state: { bbsId: bbsId }}); /// 페이징 이동
         } else {
           navigate( { pathname: URL.ERROR }, { state: { msg: resp.resultMessage } } );
         }
@@ -195,9 +201,15 @@ function GalleryEdit(props) {
                 )}
 
                 <div className="right_col btn1">
-                  <a href={URL.INFORM_GALLERY} className="btn btn_blue_h46 w_100" >
-                    목록
-                  </a>
+                  { searchCondition ? (
+                    <Link to={getBackToListURL(URL.INFORM_GALLERY, searchCondition)} className="btn btn_blue_h46 w_100" >
+                      목록
+                    </Link>
+                  ) : (
+                    <a href={URL.INFORM_GALLERY} className="btn btn_blue_h46 w_100" >
+                      목록
+                    </a>
+                  )}
                 </div>
               </div>
               {/* <!--// 버튼영역 --> */}

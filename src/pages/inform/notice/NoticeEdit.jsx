@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useListNavigation } from "@/hooks/useListNavigation";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
@@ -21,6 +22,8 @@ function NoticeEdit(props) {
   /// 게사판
   const bbsId = location.state?.bbsId || NOTICE_BBS.id;
   const nttId = location.state?.nttId || "";
+  const searchCondition = location.state?.searchCondition;
+  const { getBackToListURL } = useListNavigation(bbsId); // 공통 네비게이션 훅 사용 (목록의 특정 페이지네이션으로 돌아가기 URL 생성용)
 
   const [board, setBoard] = useState({});
   const [article, setArticle] = useState({ nttSj: "", nttCn: "" });
@@ -106,7 +109,8 @@ function NoticeEdit(props) {
         requestOptions, 
         (resp) => {
           if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
-            navigate(URL.INFORM_NOTICE, { state: { bbsId: bbsId } });
+            // navigate(URL.INFORM_NOTICE, { state: { bbsId: bbsId } });
+            navigate(getBackToListURL(URL.INFORM_NOTICE, searchCondition), { state: { bbsId: bbsId } }); /// 페이징 이동
           } else {
             navigate( { pathname: URL.ERROR }, { state: { msg: resp.resultMessage } } );
           }
@@ -211,3 +215,5 @@ function NoticeEdit(props) {
 }
 
 export default NoticeEdit;
+
+

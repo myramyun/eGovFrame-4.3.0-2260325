@@ -29,8 +29,8 @@ function GalleryList(props) {
   /// 사용자
   const [user, setUser] = useState({});
 
-  const retrieveList = useCallback((searchCondition) => {
-    const requestURL = "/board" + EgovNet.getQueryString(searchCondition);
+  const retrieveList = useCallback((srchCnd) => {
+    const requestURL = "/board" + EgovNet.getQueryString(srchCnd);
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
     EgovNet.requestFetch(

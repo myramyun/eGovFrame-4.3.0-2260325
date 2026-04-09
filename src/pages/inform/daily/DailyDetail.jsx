@@ -44,7 +44,6 @@ function DailyDetail(props) {
       requestOptions, 
       (resp) => {
         const detail = resp.result.scheduleDetail;
-        console.log("/// ", detail);
         const result = {
           ...detail, // 기존 데이터 복사
           startDateTime: convertDate(detail.schdulBgnde),

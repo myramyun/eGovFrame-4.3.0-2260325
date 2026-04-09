@@ -32,9 +32,9 @@ function NoticeList(props) {
   const userInfo = getSessionItem("loginUser");
   const userRole = userInfo?.userSe;
 
-  /// searchCondition {bbsId: 'BBSMSTR_AAAAAAAAAAAA', pageIndex: 1, searchCnd: '0', searchWrd: ''}
-  const retrieveList = useCallback((searchCondition) => {
-    const requestURL = "/board" + EgovNet.getQueryString(searchCondition);
+  /// srchCnd {bbsId: 'BBSMSTR_AAAAAAAAAAAA', pageIndex: 1, searchCnd: '0', searchWrd: ''}
+  const retrieveList = useCallback((srchCnd) => {
+    const requestURL = "/board" + EgovNet.getQueryString(srchCnd);
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
     EgovNet.requestFetch(

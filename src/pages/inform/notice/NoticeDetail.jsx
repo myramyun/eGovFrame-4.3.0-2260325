@@ -19,12 +19,12 @@ function NoticeDetail(props) {
   /// 게시판
   const bbsId = location.state?.bbsId || NOTICE_BBS.id; // 직접 URL 접근 시 location.state가 null일 수 있음
   const nttId = location.state?.nttId || "";
+  const searchCondition = location.state?.searchCondition;
+  const { getBackToListURL } = useListNavigation(bbsId); // 공통 네비게이션 훅 사용 (목록의 특정 페이지네이션으로 돌아가기 URL 생성용)
 
   const [board, setBoard] = useState({});
   const [article, setArticle] = useState({});
   const [attachFiles, setAttachFiles] = useState();
-  const searchCondition = location.state?.searchCondition;
-  const { getBackToListURL } = useListNavigation(bbsId); // 공통 네비게이션 훅 사용 (목록의 특정 페이지네이션으로 돌아가기 URL 생성용)
 
   /// 사용자
   const [user, setUser] = useState({});
@@ -52,10 +52,7 @@ function NoticeDetail(props) {
         alert("게시글이 삭제되었습니다.");
         navigate(URL.INFORM_NOTICE, { replace: true });
       } else {
-        navigate(
-          { pathname: URL.ERROR },
-          { state: { msg: resp.resultMessage } }
-        );
+        navigate( { pathname: URL.ERROR }, { state: { msg: resp.resultMessage } } );
       }
     });
   };
@@ -120,7 +117,7 @@ function NoticeDetail(props) {
                   <div className="left_col btn3">
                     {user && userRole === "ADM" && (
                       <>
-                        <Link to={{ pathname: URL.INFORM_NOTICE_MODIFY }} state={{ nttId: nttId, bbsId: bbsId, }} className="btn btn_skyblue_h46 w_100" >
+                        <Link to={{ pathname: URL.INFORM_NOTICE_MODIFY }} state={{ nttId: nttId, bbsId: bbsId, searchCondition: searchCondition }} className="btn btn_skyblue_h46 w_100" >
                           수정
                         </Link>
                         <button className="btn btn_skyblue_h46 w_100" onClick={e => { e.preventDefault(); onClickDeleteBoardArticle( article.bbsId, article.nttId, article.atchFileId ); }} >
@@ -129,7 +126,7 @@ function NoticeDetail(props) {
                       </>
                     )}
                     {user && user.id && board.replyPosblAt === "Y" && (
-                      <Link to={{ pathname: URL.INFORM_NOTICE_REPLY }} state={{ nttId: nttId, bbsId: bbsId, }} className="btn btn_skyblue_h46 w_100" >
+                      <Link to={{ pathname: URL.INFORM_NOTICE_REPLY }} state={{ nttId: nttId, bbsId: bbsId, searchCondition: searchCondition }} className="btn btn_skyblue_h46 w_100" >
                         답글작성
                       </Link>
                     )}

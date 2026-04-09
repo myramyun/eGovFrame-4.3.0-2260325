@@ -17,9 +17,7 @@ function GalleryDetail(props) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //관리자 권한 체크때문에 추가(아래)
- 
-
+  //게시판
   const bbsId = location.state?.bbsId || GALLERY_BBS.id;
   const nttId = location.state?.nttId;
   const searchCondition = location.state?.searchCondition;
@@ -137,7 +135,7 @@ function GalleryDetail(props) {
                   <div className="left_col btn3">
                     {userKey === article.frstRegisterId && (
                       <>
-                        <Link to={{ pathname: URL.INFORM_GALLERY_MODIFY }} state={{ nttId: nttId, bbsId: bbsId, }} className="btn btn_skyblue_h46 w_100" >
+                        <Link to={{ pathname: URL.INFORM_GALLERY_MODIFY }} state={{ nttId: nttId, bbsId: bbsId, searchCondition: searchCondition }} className="btn btn_skyblue_h46 w_100" >
                         수정
                         </Link>
                         <a href="#!" className="btn btn_skyblue_h46 w_100" onClick={e => { e.preventDefault(); onClickDeleteBoardArticle( article.bbsId, article.nttId, article.atchFileId ); }} >
