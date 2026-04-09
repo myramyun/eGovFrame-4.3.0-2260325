@@ -6,9 +6,6 @@ import URL from "@/constants/url";
 import samplePdsList from "/assets/images/sample_pds_list.png";
 
 function EgovDownloadDetail() {
-
-  console.log("/// URL.SUPPORT_DOWNLOAD_MODIFY", URL);
-
   return (
     <div className="container">
       <div className="c_wrap">
@@ -107,14 +104,13 @@ function EgovDownloadDetail() {
 
             {/* <!-- 버튼영역 --> */}
             <div className="board_btn_area">
-              <div className="left_col btn1">
-                <Link to={URL.SUPPORT_DOWNLOAD_MODIFY} className="btn btn_skyblue_h46 w_100">
-                  수정
-                </Link>
-              </div>
+              <div className="left_col btn1"></div>
 
               <div className="right_col btn1">
-                <Link to={URL.SUPPORT_DOWNLOAD} className="btn btn_blue_h46 w_100">
+                <Link
+                  to={URL.SUPPORT_DOWNLOAD}
+                  className="btn btn_blue_h46 w_100"
+                >
                   목록
                 </Link>
               </div>

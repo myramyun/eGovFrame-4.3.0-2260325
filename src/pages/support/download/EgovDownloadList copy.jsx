@@ -1,89 +1,55 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-
-import * as EgovNet from "@/api/egovFetch";
-import URL from "@/constants/url";
+import { Link } from "react-router-dom";
 
 import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavSupport";
-import EgovPaging from "@/components/EgovPaging";
-
-import { itemIdxByPage } from "@/utils/calc";
+import URL from "@/constants/url";
 
 import samplePdsListImg from "/assets/images/sample_pds_list.png";
 
 function EgovDownloadList() {
-  const location = useLocation();
-
-  const cndRef = useRef();
-  const wrdRef = useRef();
-
-  const [searchCondition, setSearchCondition] = useState(
-    location.state?.searchCondition || {
-      pageIndex: 1,
-      searchCnd: "0",
-      searchWrd: "",
-    }
-  ); // 기존 조회에서 접근 했을 시 || 신규로 접근 했을 시
-
-  /// 페이지리스트와 페이지네이션
-  const [paginationInfo, setPaginationInfo] = useState({});
-  const [resultList, setResultList] = useState([]);
-
-  const retrieveList = useCallback((srchCnd) => {
-      const retrieveListURL = "/bbsUseInf" + EgovNet.getQueryString(srchCnd);
-      const requestOptions = {
-        method: "GET",
-        headers: { "Content-type": "application/json", },
-      };
-
-      EgovNet.requestFetch(
-        retrieveListURL,
-        requestOptions,
-        (resp) => {
-          setPaginationInfo(resp.result.paginationInfo);
-          setResultList(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
-        },
-        (resp) => { console.log("/// err response : ", resp); }
-      );
-    },
-    [resultList, searchCondition]
-  );
-
-    useEffect(() => { retrieveList(searchCondition); }, []);
-
-
-
-
-
-
   return (
     <div className="container">
       <div className="c_wrap">
         {/* <!-- Location --> */}
         <div className="location">
           <ul>
-            <li> <Link to="" className="home"> Home </Link> </li>
-            <li> <Link to="">고객지원</Link> </li>
-            <li>자료실</li>
+            <li>
+              <Link to="" className="home">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="">고객지원</Link>
+            </li>
+            <li>소개</li>
           </ul>
         </div>
         {/* <!--// Location --> */}
 
         <div className="layout">
-          <EgovLeftNav /> {/* <!--// Navigation --> */}
+          {/* <!-- Navigation --> */}
+          <EgovLeftNav></EgovLeftNav>
+          {/* <!--// Navigation --> */}
 
-          {/* <!-- 본문 --> */}
           <div className="contents PDS_LIST" id="contents">
-            <div className="top_tit"> <h1 className="tit_1">고객지원</h1> </div>
+            {/* <!-- 본문 --> */}
+
+            <div className="top_tit">
+              <h1 className="tit_1">고객지원</h1>
+            </div>
+
             <h2 className="tit_2">자료실</h2>
-            {/* <h2 className="tit_7">본 화면은 디자인 예시임</h2> */}
+            <h2 className="tit_7">본 화면은 디자인 예시임</h2>
 
             {/* <!-- 검색조건 --> */}
             <div className="condition">
               <ul>
                 <li className="third_1 L">
                   <label className="f_select" htmlFor="search_select">
-                    <select defaultValue={"0"} name="search_select" id="search_select" >
+                    <select
+                      defaultValue={"0"}
+                      name="search_select"
+                      id="search_select"
+                    >
                       <option value="0">전체</option>
                       <option value="1">제목</option>
                       <option value="2">제목/내용</option>
@@ -92,13 +58,17 @@ function EgovDownloadList() {
                   </label>
                 </li>
                 <li className="third_2 R">
+                  {/* <!-- 210806 수정 --> */}
                   <span className="f_search w_500">
                     <input type="text" name="" placeholder="" />
                     <button type="button">조회</button>
                   </span>
                 </li>
                 <li>
-                  <Link to={URL.SUPPORT_DOWNLOAD_CREATE} className="btn btn_blue_h46 pd35" >
+                  <Link
+                    to={URL.SUPPORT_DOWNLOAD_CREATE}
+                    className="btn btn_blue_h46 pd35"
+                  >
                     등록
                   </Link>
                 </li>
@@ -108,7 +78,6 @@ function EgovDownloadList() {
 
             <h3 className="tit_5">추천 다운로드 자료</h3>
 
-            {/* <!-- 추천 --> */}
             <div className="pdslist">
               <ul>
                 <li>
@@ -161,11 +130,9 @@ function EgovDownloadList() {
                 </li>
               </ul>
             </div>
-            {/* <!--// 추천 --> */}
 
             <h3 className="tit_5">최신 등록 자료</h3>
 
-            {/* <!-- 최신 --> */}
             <div className="recent">
               <ul className="left_col">
                 <li>
@@ -243,7 +210,6 @@ function EgovDownloadList() {
                 </li>
               </ul>
             </div>
-            {/* <!--// 최신 --> */}
 
             {/* <!-- 게시판목록 --> */}
             <div className="board_list BRD007">
@@ -293,8 +259,8 @@ function EgovDownloadList() {
             </div>
             {/* <!--// 게시판목록 --> */}
 
-            {/* <!-- Paging --> */}
             <div className="board_bot">
+              {/* <!-- Paging --> */}
               <div className="paging">
                 <ul>
                   <li className="btn">
@@ -336,23 +302,24 @@ function EgovDownloadList() {
                   </li>
                 </ul>
               </div>
+              {/* <!--/ Paging --> */}
             </div>
-            {/* <!--// Paging --> */}
 
-            {/* <!-- button area --> */}
             <div className="board_btn_area">
               <div className="left_col btn1"></div>
 
               <div className="right_col btn1">
-                <Link to={URL.SUPPORT_DOWNLOAD_CREATE} className="btn btn_upload" >
+                <Link
+                  to={URL.SUPPORT_DOWNLOAD_CREATE}
+                  className="btn btn_upload"
+                >
                   <span>자료 올리기</span>
                 </Link>
               </div>
             </div>
-            {/* <!--// button area --> */}
 
+            {/* <!--// 본문 --> */}
           </div>
-          {/* <!--// 본문 --> */}
         </div>
       </div>
     </div>
@@ -360,5 +327,3 @@ function EgovDownloadList() {
 }
 
 export default EgovDownloadList;
-
-

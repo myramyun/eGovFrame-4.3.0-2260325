@@ -17,8 +17,8 @@ import { useDebouncedInput } from "@/hooks/useDebounce";
 function NoticeEdit(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [modeInfo, setModeInfo] = useState({ mode: props.mode });
-
+  const [role, setRole] = useState({ mode: props.mode }); /// 현재 페이지의 권한/모드 (Create, Read, Update, Delete)
+ 
   /// 게사판
   const bbsId = location.state?.bbsId || NOTICE_BBS.id;
   const nttId = location.state?.nttId || "";
@@ -35,26 +35,9 @@ function NoticeEdit(props) {
 
   const handleInputChange = useDebouncedInput(setArticle, 300);
 
-  const initMode = () => {
-    switch (props.mode) {
-      case CODE.MODE_CREATE:
-        setModeInfo({ ...modeInfo, title: "등록", method: "POST", url: "/board", });
-        break;
-      case CODE.MODE_MODIFY:
-        setModeInfo({ ...modeInfo, title: "수정", method: "PUT", url: `/board/${nttId}`, });
-        break;
-      case CODE.MODE_REPLY:
-        setModeInfo({ ...modeInfo, title: "답글쓰기", method: "POST", url: "/boardReply", });
-        break;
-      default:
-        navigate({ pathname: URL.ERROR }, { state: { msg: "" } });
-    }
-    retrieveDetail();
-  };
-
   /// Read
   const retrieveDetail = () => {
-    if (modeInfo.mode === CODE.MODE_CREATE) {
+    if (role.mode === CODE.MODE_CREATE) {
       // 등록이면 마스터 정보에서 파일 첨부 가능 여부 조회
       const requestURL = `/boardFileAtch/${bbsId}`;
       const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
@@ -78,10 +61,10 @@ function NoticeEdit(props) {
         (resp) => {
           setBoard(resp.result.brdMstrVO);
 
-          if (modeInfo.mode === CODE.MODE_MODIFY) {
+          if (role.mode === CODE.MODE_MODIFY) {
             setArticle(resp.result.boardVO);
             setAttachFiles(resp.result.resultFiles);
-          } else if (modeInfo.mode === CODE.MODE_REPLY) {
+          } else if (role.mode === CODE.MODE_REPLY) {
             setArticle({
               ...resp.result.boardVO,
               nttSj: "RE: " + resp.result.boardVO.nttSj, /// 답글모드 "RE: " 추가
@@ -96,13 +79,13 @@ function NoticeEdit(props) {
   };
 
   /// Create, Update
-  const saveBoard = () => { 
+  const saveArticle = () => { 
     const formData = new FormData();
     for (let key in article) { formData.append(key, article[key]); }
 
     if (bbsFormVaildator(formData)) {
-      const requestURL = modeInfo.url;
-      const requestOptions = { method: modeInfo.method, body: formData, };
+      const requestURL = role.url;
+      const requestOptions = { method: role.method, body: formData, };
 
       EgovNet.requestFetch(
         requestURL,
@@ -117,6 +100,23 @@ function NoticeEdit(props) {
         }
       );
     }
+  };
+
+  const initMode = () => {
+    switch (props.mode) {
+      case CODE.MODE_CREATE:
+        setRole({ ...role, title: "등록", method: "POST", url: "/board", });
+        break;
+      case CODE.MODE_MODIFY:
+        setRole({ ...role, title: "수정", method: "PUT", url: `/board/${nttId}`, });
+        break;
+      case CODE.MODE_REPLY:
+        setRole({ ...role, title: "답글쓰기", method: "POST", url: "/boardReply", });
+        break;
+      default:
+        navigate({ pathname: URL.ERROR }, { state: { msg: "" } });
+    }
+    retrieveDetail();
   };
 
   const TagBreadcrumbs = () => (
@@ -143,7 +143,7 @@ function NoticeEdit(props) {
           <div className="contents NOTICE_LIST" id="contents">
             
             <div className="top_tit"> <h1 className="tit_1">알림마당</h1> </div>
-            <h2 className="tit_2"> {board && board.bbsNm} {modeInfo.title} </h2>
+            <h2 className="tit_2"> {board && board.bbsNm} {role.title} </h2>
 
             <div className="board_view2">
               <dl>
@@ -169,7 +169,7 @@ function NoticeEdit(props) {
                 </dd>
               </dl>
               {/* 답글이 아니고 게시판 파일 첨부 가능 상태에서만 첨부파일 컴포넌트 노출 */}
-              {modeInfo?.mode !== CODE.MODE_REPLY && board.fileAtchPosblAt === "Y" && (
+              {role?.mode !== CODE.MODE_REPLY && board.fileAtchPosblAt === "Y" && (
                 <EgovAttachFile
                   fnChangeFile = {(attachfile) => {
                     const arrayConcat = { ...article }; // 기존 단일 파일 업로드에서 다중파일 객체 추가로 변환(아래 for문으로)
@@ -189,7 +189,7 @@ function NoticeEdit(props) {
               <div className="board_btn_area">
                 {userRole === "ADM" && (
                   <div className="left_col btn1">
-                    <button className="btn btn_skyblue_h46 w_100" onClick={() => saveBoard()} >
+                    <button className="btn btn_skyblue_h46 w_100" onClick={() => saveArticle()} >
                       저장
                     </button>
                   </div>
