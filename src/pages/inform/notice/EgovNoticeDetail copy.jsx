@@ -28,14 +28,14 @@ function EgovNoticeDetail(props) {
 
   /// 사용자
   const [user, setUser] = useState({});
-  const sessionUser = getSessionItem("loginUser"); // 관리자 권한 체크
-  const sessionUserSe = sessionUser?.userSe;
+  const userInfo = getSessionItem("loginUser");
+  const userRole = userInfo?.userSe;
 
   const retrieveDetail = () => {
-    const retrieveDetailURL = `/board/${bbsId}/${nttId}`;
+    const requestURL = `/board/${bbsId}/${nttId}`;
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
-    EgovNet.requestFetch(retrieveDetailURL, requestOptions, function (resp) {
+    EgovNet.requestFetch(requestURL, requestOptions, function (resp) {
       setBoard(resp.result.brdMstrVO);
       setUser(resp.result.user);
       setArticle(resp.result.boardVO);
@@ -44,10 +44,10 @@ function EgovNoticeDetail(props) {
   };
 
   const onClickDeleteBoardArticle = (bbsId, nttId, atchFileId) => {
-    const deleteBoardURL = `/board/${bbsId}/${nttId}`;
+    const requestURL = `/board/${bbsId}/${nttId}`;
     const requestOptions = { method: "PATCH", headers: { "Content-type": "application/json", }, body: JSON.stringify({ atchFileId: atchFileId }) };
 
-    EgovNet.requestFetch(deleteBoardURL, requestOptions, (resp) => {
+    EgovNet.requestFetch(requestURL, requestOptions, (resp) => {
       if (Number(resp.resultCode) === Number(CODE.RCV_SUCCESS)) {
         alert("게시글이 삭제되었습니다.");
         navigate(URL.INFORM_NOTICE, { replace: true });
@@ -60,7 +60,7 @@ function EgovNoticeDetail(props) {
     });
   };
 
-  const Breadcrumbs = memo(() => {
+  const TagBreadcrumbs = memo(() => {
     return (
       <div className="location">
         <ul>
@@ -85,7 +85,7 @@ function EgovNoticeDetail(props) {
   return (
     <div className="container">
       <div className="c_wrap">
-        <Breadcrumbs />{/* <!--// Breadcrumbs --> */}
+        <TagBreadcrumbs />{/* <!--// Breadcrumbs --> */}
 
         <div className="layout">
           <EgovLeftNav />{/* <!--// Navigation --> */}
@@ -111,14 +111,13 @@ function EgovNoticeDetail(props) {
               </div>
               <div className="board_attach">
                 {/* 답글이 아니고 게시판 파일 첨부 가능 상태에서만 첨부파일 컴포넌트 노출 */}
-                { article.parnts === "0" &&
-                  board.fileAtchPosblAt === "Y" && 
-                  ( <EgovAttachFile boardFiles={attachFiles} /> )
-                }
+                { article.parnts === "0" && board.fileAtchPosblAt === "Y" && ( 
+                  <EgovAttachFile boardFiles={attachFiles} /> 
+                )}
               </div>
 
               <div className="board_btn_area">
-                {user && sessionUserSe === "ADM" && board.bbsUseFlag === "Y" && (
+                {user && userRole === "ADM" && board.bbsUseFlag === "Y" && (
                     <div className="left_col btn3">
                       <Link to={{ pathname: URL.INFORM_NOTICE_MODIFY }} state={{ nttId: nttId, bbsId: bbsId, }} className="btn btn_skyblue_h46 w_100" >
                         수정

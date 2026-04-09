@@ -189,24 +189,23 @@ function EgovAdminNoticeEdit(props) {
                 </dd>
               </dl>
               {/* 답글이 아니고 게시판 파일 첨부 가능 상태에서만 첨부파일 컴포넌트 노출 */}
-              {modeInfo?.mode !== CODE.MODE_REPLY &&
-                masterBoard.fileAtchPosblAt === "Y" && (
-                  <EgovAttachFile
-                    fnChangeFile={(attachfile) => {
-                      const arrayConcat = { ...boardDetail }; // 기존 단일 파일 업로드에서 다중파일 객체 추가로 변환(아래 for문으로)
-                      for (let i = 0; i < attachfile.length; i++) {
-                        arrayConcat[`file_${i}`] = attachfile[i];
-                      }
-                      setBoardDetail(arrayConcat);
-                    }}
-                    fnDeleteFile={(deletedFile) => {
-                      setBoardAttachFiles(deletedFile);
-                    }}
-                    boardFiles={boardAttachFiles}
-                    mode={props.mode}
-                    posblAtchFileNumber={masterBoard.posblAtchFileNumber}
-                  />
-                )}
+              {modeInfo?.mode !== CODE.MODE_REPLY && masterBoard.fileAtchPosblAt === "Y" && (
+                <EgovAttachFile
+                  fnChangeFile = {(attachfile) => {
+                    const arrayConcat = { ...boardDetail }; // 기존 단일 파일 업로드에서 다중파일 객체 추가로 변환(아래 for문으로)
+                    for (let i = 0; i < attachfile.length; i++) {
+                      arrayConcat[`file_${i}`] = attachfile[i];
+                    }
+                    setBoardDetail(arrayConcat);
+                  }}
+                  fnDeleteFile={(deletedFile) => {
+                    setBoardAttachFiles(deletedFile);
+                  }}
+                  boardFiles={boardAttachFiles}
+                  mode={props.mode}
+                  posblAtchFileNumber={masterBoard.posblAtchFileNumber}
+                />
+              )}
               {/* <!-- 버튼영역 --> */}
               <div className="board_btn_area">
                 <div className="left_col btn1">

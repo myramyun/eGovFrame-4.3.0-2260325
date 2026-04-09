@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useListNavigation } from "@/hooks/useListNavigation";
 
@@ -6,17 +6,21 @@ import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import { NOTICE_BBS } from "@/config";
 
-import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
+import { default as TagLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
 import EgovPaging from "@/components/EgovPaging";
 
 import { itemIdxByPage } from "@/utils/calc";
 import { getSessionItem } from "@/utils/storage";
 
-function EgovNoticeList(props) {
+/**
+ * 공자사항은 일반유저의 등록,수정 차단을 위해 
+ * getSessionItem에 권한 확인
+ */
+function NoticeList(props) {
   /// 게시판
   const bbsId = NOTICE_BBS.id;
-  const cndRef = useRef(); /// 검색조건 네비게이션 훅 사용
-  const wrdRef = useRef(); /// 입력검색 네비게이션 훅 사용
+  const cndRef = useRef(); /// 검색조건
+  const wrdRef = useRef(); /// 입력검색
 
   const [board, setBoard] = useState({});
   const [article, setArticle] = useState([]);
@@ -25,51 +29,47 @@ function EgovNoticeList(props) {
 
   /// 사용자
   const [user, setUser] = useState({});
-  const sessionUser = getSessionItem("loginUser"); // 관리자 권한 체크
-  const sessionUserSe = sessionUser?.userSe;
+  const userInfo = getSessionItem("loginUser");
+  const userRole = userInfo?.userSe;
 
   /// searchCondition {bbsId: 'BBSMSTR_AAAAAAAAAAAA', pageIndex: 1, searchCnd: '0', searchWrd: ''}
   const retrieveList = useCallback((searchCondition) => {
-    const retrieveListURL = "/board" + EgovNet.getQueryString(searchCondition);
+    const requestURL = "/board" + EgovNet.getQueryString(searchCondition);
     const requestOptions = { method: "GET", headers: { "Content-type": "application/json", }, };
 
     EgovNet.requestFetch(
-      retrieveListURL,
+      requestURL,
       requestOptions,
       (resp) => {
         setBoard(resp.result.brdMstrVO);
         setUser(resp.result.user);
 
         setPaginationInfo(resp.result.paginationInfo);
-        setArticle(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장
+        setArticle(resp.result.resultList || []); /// 중요: JSX 배열을 만들지 말고, 데이터 배열을 그대로 저장 후 Return에서 맵핑
       },
-      function (resp) {
-        console.log("/// err response : ", resp);
-      }
+      (resp) => { console.log("/// err response : ", resp);}
     );
   }, []);
 
-  const Breadcrumbs = memo(() => {
-    return (
-      <div className="location">
-        <ul>
-          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
-          <li> <Link to={URL.INFORM}>알림마당</Link> </li>
-          <li>{board && board.bbsNm}</li>
-        </ul>
-      </div>
-    );
-  });
+  const TagBreadcrumbs = () => (
+    <div className="location">
+      <ul>
+        <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+        <li> <Link to={URL.INFORM}>알림마당</Link> </li>
+        <li>{board && board.bbsNm}</li>
+      </ul>
+    </div>
+  );
 
   useEffect(() => { retrieveList(searchCondition); }, [searchCondition]);
 
   return (
     <div className="container">
       <div className="c_wrap">
-        <Breadcrumbs />{/* <!--// Breadcrumbs --> */}
+        <TagBreadcrumbs />{/* <!--// Breadcrumbs --> */}
        
         <div className="layout">
-          <EgovLeftNav /> {/* <!--// Navigation --> */}
+          <TagLeftNav /> {/* <!--// Navigation --> */}
 
           {/* <!-- 본문 --> */}
           <div className="contents NOTICE_LIST" id="contents">
@@ -97,7 +97,7 @@ function EgovNoticeList(props) {
                   </span>
                 </li>
                 {/* user.id 대신 권한그룹 세션값 사용 */}
-                {user && sessionUserSe === "ADM" && board.bbsUseFlag === "Y" && (
+                {userRole === "ADM" && board.bbsUseFlag === "Y" && (
                   <li>
                     <Link to={URL.INFORM_NOTICE_CREATE} state={{ bbsId: bbsId }} className="btn btn_blue_h46 pd35" >
                       등록
@@ -148,7 +148,7 @@ function EgovNoticeList(props) {
                 moveToPage={(passedPage) => { handlePageMove(passedPage, cndRef, wrdRef, retrieveList); }}
               />
             </div>
-            {/* <!--/ Paging --> */}
+            {/* <!--// Paging --> */}
 
           </div>
           {/* <!--// 본문 --> */}
@@ -159,5 +159,5 @@ function EgovNoticeList(props) {
   );
 }
 
-export default EgovNoticeList;
+export default NoticeList;
 

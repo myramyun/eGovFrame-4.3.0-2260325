@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import * as EgovNet from "@/api/egovFetch";
 import URL from "@/constants/url";
 import CODE from "@/constants/code";
 
-import { default as EgovLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
+import { default as TagLeftNav } from "@/components/leftmenu/EgovLeftNavInform";
 
 function EgovDailyList(props) {
-  console.group("EgovDailyDetail");
-  console.log("[Start] EgovDailyDetail ------------------------------");
-  console.log("EgovDailyDetail [props] : ", props);
-
   const location = useLocation();
-  console.log("EgovDailyDetail [location] : ", location);
 
   const DATE = new Date();
   const TODAY = new Date(DATE.getFullYear(), DATE.getMonth(), DATE.getDate());
@@ -34,27 +29,15 @@ function EgovDailyList(props) {
     let changedDate;
 
     if (target === CODE.DATE_YEAR) {
-      changedDate = new Date(
-        searchCondition.year + amount,
-        searchCondition.month,
-        searchCondition.date
-      );
+      changedDate = new Date( searchCondition.year + amount, searchCondition.month, searchCondition.date );
     }
 
     if (target === CODE.DATE_MONTH) {
-      changedDate = new Date(
-        searchCondition.year,
-        searchCondition.month + amount,
-        searchCondition.date
-      );
+      changedDate = new Date( searchCondition.year, searchCondition.month + amount, searchCondition.date );
     }
 
     if (target === CODE.DATE_DATE) {
-      changedDate = new Date(
-        searchCondition.year,
-        searchCondition.month,
-        searchCondition.date + amount
-      );
+      changedDate = new Date( searchCondition.year, searchCondition.month, searchCondition.date + amount );
     }
 
     setSearchCondition({
@@ -129,18 +112,12 @@ function EgovDailyList(props) {
     [drawList]
   );
 
-  const Location = React.memo(function Location() {
+  const TagBreadcurms = memo(() => {
     return (
       <div className="location">
         <ul>
-          <li>
-            <Link to={URL.MAIN} className="home">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to={URL.INFORM}>알림마당</Link>
-          </li>
+          <li> <Link to={URL.MAIN} className="home"> Home </Link> </li>
+          <li> <Link to={URL.INFORM}>알림마당</Link> </li>
           <li>오늘의 행사</li>
         </ul>
       </div>
@@ -153,29 +130,17 @@ function EgovDailyList(props) {
     return hour + ":" + starminute;
   };
 
-  useEffect(() => {
-    retrieveList(searchCondition);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchCondition]);
+  useEffect(() => { retrieveList(searchCondition); }, [searchCondition]);
 
-  useEffect(() => {
-    drawList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scheduleList]);
+  useEffect(() => { drawList(); }, [scheduleList]);
 
-  console.log("------------------------------EgovDailyDetail [End]");
-  console.groupEnd("EgovDailyDetail");
   return (
     <div className="container">
       <div className="c_wrap">
-        {/* <!-- Location --> */}
-        <Location />
-        {/* <!--// Location --> */}
+        <TagBreadcurms /> {/* <!--// Location --> */}
 
         <div className="layout">
-          {/* <!-- Navigation --> */}
-          <EgovLeftNav />
-          {/* <!--// Navigation --> */}
+          <TagLeftNav /> {/* <!--// Navigation --> */}
 
           <div className="contents TODAY_SCHEDULE" id="contents">
             {/* <!-- 본문 --> */}
@@ -280,3 +245,5 @@ function EgovDailyList(props) {
 }
 
 export default EgovDailyList;
+
+

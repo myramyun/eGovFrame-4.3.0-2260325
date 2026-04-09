@@ -40,17 +40,18 @@ import EgovSupportQnaDetail from "@/pages/support/qna/EgovQnaDetail";
 import EgovSupportApply from "@/pages/support/apply/EgovSupportApply";
 
 //INFORM
-import EgovDailyList from "@/pages/inform/daily/EgovDailyList";
-import EgovDailyDetail from "@/pages/inform/daily/EgovDailyDetail";
-import EgovWeeklyList from "@/pages/inform/weekly/EgovWeeklyList";
+import DailyList from "@/pages/inform/daily/DailyList";
+import DailyDetail from "@/pages/inform/daily/DailyDetail";
 
-import EgovNoticeList from "@/pages/inform/notice/EgovNoticeList";
-import EgovNoticeDetail from "@/pages/inform/notice/EgovNoticeDetail";
-import EgovNoticeEdit from "@/pages/inform/notice/EgovNoticeEdit";
+import WeeklyList from "@/pages/inform/weekly/WeeklyList";
 
-import EgovGalleryList from "@/pages/inform/gallery/EgovGalleryList";
-import EgovGalleryDetail from "@/pages/inform/gallery/EgovGalleryDetail";
-import EgovGalleryEdit from "@/pages/inform/gallery/EgovGalleryEdit";
+import NoticeList from "@/pages/inform/notice/NoticeList";
+import NoticeDetail from "@/pages/inform/notice/NoticeDetail";
+import NoticeEdit from "@/pages/inform/notice/NoticeEdit";
+
+import GalleryList from "@/pages/inform/gallery/GalleryList";
+import GalleryDetail from "@/pages/inform/gallery/GalleryDetail";
+import GalleryEdit from "@/pages/inform/gallery/GalleryEdit";
 
 //PRODUCT
 import EgovEventList from "@/pages/product/event/EgovEventList";
@@ -353,22 +354,22 @@ const SecondRoutes = () => {
         {/* INFORM */}
         <Route path={URL.INFORM} element={<Navigate to={URL.INFORM_DAILY} replace />} />
 
-        <Route path={URL.INFORM_DAILY} element={<EgovDailyList />} />
-        <Route path={URL.INFORM_DAILY_DETAIL} element={<EgovDailyDetail />} />
-        <Route path={URL.INFORM_WEEKLY} element={<EgovWeeklyList />} />
-        <Route path={URL.INFORM_WEEKLY_DETAIL} element={<EgovDailyDetail />} />
+        <Route path={URL.INFORM_DAILY} element={<DailyList />} />
+        <Route path={URL.INFORM_DAILY_DETAIL} element={<DailyDetail />} />
+        
+        <Route path={URL.INFORM_WEEKLY} element={<WeeklyList />} />
+       
+        <Route path={URL.INFORM_NOTICE} element={<NoticeList />} />
+        <Route path={URL.INFORM_NOTICE_DETAIL} element={<NoticeDetail />} />
+        <Route path={URL.INFORM_NOTICE_CREATE} element={<NoticeEdit mode={CODE.MODE_CREATE} />} />
+        <Route path={URL.INFORM_NOTICE_MODIFY} element={<NoticeEdit mode={CODE.MODE_MODIFY} />} />
+        <Route path={URL.INFORM_NOTICE_REPLY} element={<NoticeEdit mode={CODE.MODE_REPLY} />} />
 
-        <Route path={URL.INFORM_NOTICE} element={<EgovNoticeList />} />
-        <Route path={URL.INFORM_NOTICE_DETAIL} element={<EgovNoticeDetail />} />
-        <Route path={URL.INFORM_NOTICE_CREATE} element={<EgovNoticeEdit mode={CODE.MODE_CREATE} />} />
-        <Route path={URL.INFORM_NOTICE_MODIFY} element={<EgovNoticeEdit mode={CODE.MODE_MODIFY} />} />
-        <Route path={URL.INFORM_NOTICE_REPLY} element={<EgovNoticeEdit mode={CODE.MODE_REPLY} />} />
-
-        <Route path={URL.INFORM_GALLERY} element={<EgovGalleryList />} />
-        <Route path={URL.INFORM_GALLERY_DETAIL} element={<EgovGalleryDetail />} />
-        <Route path={URL.INFORM_GALLERY_CREATE} element={<EgovGalleryEdit mode={CODE.MODE_CREATE} />} />
-        <Route path={URL.INFORM_GALLERY_MODIFY} element={<EgovGalleryEdit mode={CODE.MODE_MODIFY} />} />
-        <Route path={URL.INFORM_GALLERY_REPLY} element={<EgovGalleryEdit mode={CODE.MODE_REPLY} />} />
+        <Route path={URL.INFORM_GALLERY} element={<GalleryList />} />
+        <Route path={URL.INFORM_GALLERY_DETAIL} element={<GalleryDetail />} />
+        <Route path={URL.INFORM_GALLERY_CREATE} element={<GalleryEdit mode={CODE.MODE_CREATE} />} />
+        <Route path={URL.INFORM_GALLERY_MODIFY} element={<GalleryEdit mode={CODE.MODE_MODIFY} />} />
+        <Route path={URL.INFORM_GALLERY_REPLY} element={<GalleryEdit mode={CODE.MODE_REPLY} />} />
 
         {/* PRODUCT */}
         <Route path={URL.PRODUCT} element={<Navigate to={URL.PRODUCT_EVENT} replace />} />
