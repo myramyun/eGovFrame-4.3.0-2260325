@@ -28,9 +28,9 @@ import EgovIntroWork from "@/pages/intro/EgovIntroWork";
 import EgovIntroService from "@/pages/intro/EgovIntroService";
 
 //SUPPORT
-import EgovSupportDownloadList from "@/pages/support/download/EgovDownloadList";
-import EgovSupportDownloadDetail from "@/pages/support/download/EgovDownloadDetail";
-import EgovSupportDownloadEdit from "@/pages/support/download/EgovDownloadEdit"; /// url.js의 경로 create, modify는 ~Edit page로 이동한다
+import SupportDownloadList from "@/pages/support/download/DownloadList";
+import SupportDownloadDetail from "@/pages/support/download/DownloadDetail";
+import SupportDownloadEdit from "@/pages/support/download/DownloadEdit"; /// url.js의 경로 create, modify는 ~Edit page로 이동한다
 
 import DxAssetList from "@/pages/support/asset/DxAssetList";
 import DxAssetEdit from "@/pages/support/asset/DxAssetEdit";
@@ -337,11 +337,11 @@ const SecondRoutes = () => {
 
         {/* SUPPORT */}
         <Route path={URL.SUPPORT} element={<Navigate to={URL.SUPPORT_DOWNLOAD} replace />} />
-        <Route path={URL.SUPPORT_DOWNLOAD} element={<EgovSupportDownloadList />} />
-        <Route path={URL.SUPPORT_DOWNLOAD_DETAIL} element={<EgovSupportDownloadDetail />} />
-        <Route path={URL.SUPPORT_DOWNLOAD_CREATE} element={<EgovSupportDownloadEdit mode={CODE.MODE_CREATE}/>} /> {/* /// url.js의 경로 create, modify는 ~Edit page로 이동한다 */}
-        <Route path={URL.SUPPORT_DOWNLOAD_MODIFY} element={<EgovSupportDownloadEdit mode={CODE.MODE_MODIFY} />} />
-        <Route path={URL.SUPPORT_DOWNLOAD_REPLY} element={<EgovSupportDownloadEdit mode={CODE.MODE_REPLY} />} />
+        <Route path={URL.SUPPORT_DOWNLOAD} element={<SupportDownloadList />} />
+        <Route path={URL.SUPPORT_DOWNLOAD_DETAIL} element={<SupportDownloadDetail />} />
+        <Route path={URL.SUPPORT_DOWNLOAD_CREATE} element={<SupportDownloadEdit mode={CODE.MODE_CREATE}/>} /> {/* /// url.js의 경로 create, modify는 ~Edit page로 이동한다 */}
+        <Route path={URL.SUPPORT_DOWNLOAD_MODIFY} element={<SupportDownloadEdit mode={CODE.MODE_MODIFY} />} />
+        <Route path={URL.SUPPORT_DOWNLOAD_REPLY} element={<SupportDownloadEdit mode={CODE.MODE_REPLY} />} />
 
         <Route path={URL.SUPPORT_ASSET} element={<DxAssetList />} />
         <Route path={URL.SUPPORT_ASSET_CREATE} element={<DxAssetEdit mode={CODE.MODE_CREATE} />} />
